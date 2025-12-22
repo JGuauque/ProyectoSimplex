@@ -1,184 +1,99 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
 
-    <link rel="icon" href="{{asset('Assets/Home/Logogym.jpg')}}" type="Assets/Home/jpg">
-    <link rel="stylesheet" href={{asset("css/styles.css") }} />
-    <link rel="stylesheet" href={{asset('css/estilos-tablas.css')}}>  
-    <link rel="stylesheet" href={{asset('css/estilos-formularios.css')}}>
-    <link
-      rel="stylesheet"
-      href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
-      integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm"
-      crossorigin="anonymous"
-    />
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>La Casa del Nintendo - Dashboard</title>
 
-    <title>Panel de Control</title>
-  </head>
+  <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+  <!-- <link rel="stylesheet" href="css/dashboard.css"> -->
+  <link rel="stylesheet" href="css/estilos-usuarios.css"><!-- estilos propios -->
+  <link rel="stylesheet" href="css/estilos-inventario.css"><!-- estilos inventario -->
+  <link rel="stylesheet" href="{{ asset('css/estilos-ventas.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/estilos-clientes.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/estilos-turnos.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/estilos-prestamos.css') }}">
 
-  <body>
-    <div class="conteiner">
-      <div class="topbar">
-        <div class="logo">
-          <h2>S U G U S</h2> 
-          <p>Bienvenido, {{Auth::user()->name}}.</p>
-        </div>
-        <div class="search">
-          <input type="text" id="search" placeholder="Buscar aqui" />
-          <label for="search"> <i class="fas fa-search"></i></label>
-        </div>
-        <i class="fas fa-bell"></i>
-        <div class="user">
-          <img src={{asset('Assets/Dashboard/user1.png')}} alt="" />
-        </div>
-      </div>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-      <!-- slidebar   -->
+  <!-- Scripts -->
+  @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-      <div class="slidebar">
-        <ul>
-          <li>
-            <a href="#">
-              <i class="fas fa-th-large"></i>
-              <div href="{{route('dashboard')}}">Dashboard</div>
-            </a>
-          </li>
-
-          <!-- Sección de Clientes con submenú -->
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle">
-              <i class="fas fa-users"></i>
-              <div>Clientes</div>
-            </a>
-            <ul class="dropdown-menu">
-              <li><a href="{{route('clientes.index')}}">Gestionar Clientes</a></li>
-              <li><a href="{{route('clientes.create')}}">Agregar Clientes</a></li>
-            </ul>
-          </li>
-
-          <!-- Sección de Usuarios con submenú -->
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle">
-              <i class="fas fa-user"></i>
-              <div>Usuarios</div>
-            </a>
-            <ul class="dropdown-menu">
-              {{-- @can('proveedores.create') --}}
-              <li><a href="#gestionar-usuarios">Gestionar Usuarios</a></li>
-              <li><a href="{{ route('register') }}">Agregar Usuarios</a></li>
-              {{-- @endcan --}}
-            </ul>
-          </li>
-
-          <!-- Sección de Instructores con submenú -->
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle">
-              <i class="fas fa-chalkboard-teacher"></i>
-              <div>Instructores</div>
-            </a>
-            <ul class="dropdown-menu">
-              <li>
-                <a href="{{route('instructores.index')}}">Gestionar Instructores</a>
-              </li>
-              <li><a href="{{route('instructores.create')}}">Agregar Instructores</a></li>
-            </ul>
-          </li>
-
-          <!-- Sección de clases con submenú -->
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle">
-              <i class="fas fa-dumbbell"></i>
-              <div>Asignacion de clases</div> 
-            </a>
-            <ul class="dropdown-menu">
-              <li>
-                <a href="{{route('clases.index')}}">Gestionar clases</a>
-              </li>
-              <li><a href="{{route('clases.create')}}">Agregar nueva clase</a></li>
-            </ul>
-          </li>
-
-          <!-- Sección de Inventario con submenú -->
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle">
-              <i class="fas fa-warehouse"></i>
-              <div>Inventario</div>
-            </a>
-            <ul class="dropdown-menu">
-              <li><a href="{{route('activos.index')}}">Gestionar Inventario</a></li>
-              <li><a href="{{route('activos.create')}}">Agregar Inventario</a></li>
-            </ul>
-          </li>
-
-          <!-- Sección de Proveedor con submenú -->
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle">
-              <i class="fas fa-truck"></i>
-              <div>Proveedores</div>
-            </a>
-            <ul class="dropdown-menu">
-              <li><a href="{{route('proveedores.index')}}">Gestionar Proveedores</a></li>
-              @can('proveedores.create')
-              <li><a href="{{route('proveedores.create')}}">Agregar Proveedor</a></li>
-              @endcan
-            </ul>
-          </li>
-
-          <!-- Sección de Análisis con submenú -->
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle">
-              <i class="fas fa-chart-bar"></i>
-              <div>Análisis</div>
-            </a>
-            <ul class="dropdown-menu">
-              <li><a href="{{route('pdf.clientes')}}">Reporte de Clientes</a></li>
-              <li><a href="{{route('pdf.proveedores')}}">Reporte de Proveedores</a></li>
-              <li>
-                <a href="{{route('pdf.instructores')}}">Reporte de Instructores</a>
-              </li>
-              <li><a href="{{route('pdf.activos')}}">Reporte de Inventario</a></li>
-            </ul>
-          </li>
-
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle">
-              <i class="fas fa-cog"></i>
-              <div>Configuración</div>
-            </a>
-            <ul class="dropdown-menu">
-              <li><a href="{{route('profile.edit')}}">Perfil</a></li>
-              <li>
-                <!-- Authentication -->
-              <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <input type="submit" value="Salir del Sistema" class="logout-link">
-            </form>
-              </li>
-            </ul>
-          </li>
-
-          <li>
-            <a href="#">
-              <i class="fas fa-question"></i>
-              <div>Ayuda</div>
-            </a>
-          </li>
-        </ul>
-      </div>
-
-      <div class="main">
-        <!-- AQUI SE COLOCA TODOS LOS ELEMENTOS CAMBIANTES -->
-        @yield('contenido')
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-header">
+      <img src="{{ asset('Assets\lacasadelnintendo-removebg-preview.png') }}" alt="Logo" class="logo">
+      <h2>La Casa del Nintendo</h2>
     </div>
+    <nav class="sidebar-nav">
+      
+      <!-- @can('ver dashboard')
+        <a href="{{ route('dashboard') }}" class="active"><i class="fa-solid fa-house"></i> Dashboard</a>
+      @endcan
+      
+      @can('ver turnos')
+        <a href="{{ route('turno.index') }}"><i class="fa-solid fa-clock"></i> Turno</a>
+      @endcan
+      
+      @can('ver usuarios')
+        <a href="{{ route('usuarios.index') }}"><i class="fa-solid fa-user-gear"></i> Usuarios</a>
+      @endcan
+      
+      @can('ver clientes')
+        <a href="{{ route('cliente.index') }}"><i class="fa-solid fa-users"></i> Clientes</a>
+      @endcan
+      
+      @can('ver inventario')
+        <a href="{{ route('inventario.index') }}"><i class="fa-solid fa-boxes-stacked"></i> Inventario</a>
+      @endcan
+      
+      @can('ver prestamos')
+        <a href="{{ route('prestamo.index') }}"><i class="fa-solid fa-handshake"></i> Préstamos</a>
+      @endcan
+      
+      @can('ver ventas')
+        <a href="{{ route('ventas.create') }}"><i class="fa-solid fa-cash-register"></i> Ventas</a>
+      @endcan -->
+      <a href="#" class="active"><i class="fa-solid fa-house"></i> Dashboard</a>
+      <a href="#"><i class="fa-solid fa-clock"></i> Turno</a>
+      <a href="#"><i class="fa-solid fa-user-gear"></i> Usuarios</a>
+      <a href="#"><i class="fa-solid fa-users"></i> Clientes</a>
+      <a href="#"><i class="fa-solid fa-boxes-stacked"></i> Inventario</a>
+      <a href="#"><i class="fa-solid fa-handshake"></i> Préstamos</a>
+      <a href="#"><i class="fa-solid fa-cash-register"></i> Ventas</a>
+    </nav>
+  </aside>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
-    <script src="{{asset('js/chart1.js')}}"></script>
-    <script src="{{asset('js/chart2.js')}}"></script>
-    <script src="{{asset('js/script.js')}}"></script>
-  </body>
+  <!-- Header -->
+  <header class="main-header">
+    <button id="menuToggle" class="menu-btn">
+      <img src="{{ asset('Assets/control.png') }}" alt="Menu" class="menu-icon">
+    </button>
+
+    <h1 id="headerTitle">@yield('titulo', 'Dashboard')</h1>
+
+    <div class="user-info">
+      <a href="{{route('profile.edit')}}">👤</a>
+      <!-- <span id="usuarioActivo" href="{{route('profile.edit')}}" >👤}}</span> -->
+      <form method="POST" action="{{ route('logout') }}">
+        @csrf
+      <button id="logoutBtn" type="submit" class="logout-btn">Salir</button>
+      </form>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main id="mainContent">
+    <!-- AQUI SE COLOCA TODOS LOS ELEMENTOS CAMBIANTES -->
+      @yield('contenido')
+  </main>
+
+  <script src="{{ asset('js/app.js') }}"></script>
+  <script src="{{ asset('js/dashboard.js') }}"></script>
+</body>
 </html>

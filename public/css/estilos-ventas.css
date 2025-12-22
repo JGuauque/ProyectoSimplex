@@ -1,0 +1,194 @@
+
+:root{
+  --rojo:#e60012;
+  --azul:#0f9bd7;
+  --blanco:#fff;
+  --negro:#111;
+  --radius:12px;
+  --header-height:72px; /* ajusta si tu header real difiere */
+  font-family:'Inter',sans-serif;
+}
+
+/* ================== Reset básico ================== */
+/* *{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;} */
+
+/* Hacemos que el fondo del body y el fondo del módulo compartan el mismo degradado
+   para que se "camufle" y no se vean franjas grises */
+body{
+  margin:0;
+  background:var(--blanco);
+  color:var(--negro);
+}
+
+/* ===== Intro (sin cambios funcionales) ===== */
+.intro{
+  position:fixed; inset:0;
+  background:var(--negro);
+  display:flex; justify-content:center; align-items:center;
+  z-index:3000;
+  animation:fadeOut .4s ease .9s forwards;
+}
+.intro-img{ width:120px; animation:zoomIn .9s ease; }
+@keyframes zoomIn{0%{transform:scale(1);opacity:1}100%{transform:scale(12);opacity:0}}
+@keyframes fadeOut{to{opacity:0;visibility:hidden}}
+
+/* ================== Header sticky (sin modificar visual) ================== */
+/* .main-header{
+  position:sticky;
+  top:0;
+  left:0;
+  right:0;
+  height:var(--header-height);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:12px 20px;
+  background:var(--blanco); 
+  z-index:2000;
+  box-shadow:none; 
+} */
+
+/* ================== Fondo 50/50 del módulo ================== */
+/* El .ventas-bg empieza desde el tope de la página: como header es sticky,
+   el header quedará encima y no habrá franjas. */
+.ventas-bg{
+  width:100%;
+  min-height:calc(100vh - var(--header-height));
+  margin-top:0; /* no desplazamiento adicional */
+  background: linear-gradient(to right, var(--rojo) 50%, var(--azul) 50%);
+  display:flex;
+  justify-content:center;
+  align-items:flex-start; /* contenido fijo estará centrado vía .ventas-container */
+  padding: 40px 20px;
+  position:relative;
+  z-index:1;
+}
+
+/* ================== Contenedor blanco (FIXED y con la estructura intacta) ================== */
+.ventas-container{
+  background: var(--blanco);
+  padding: 36px;
+  border-radius: 26px;
+  width: calc(100% - 80px);
+  max-width: 1400px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+  box-sizing:border-box;
+
+  /* Fixed y centrado en pantalla */
+  position: fixed;
+  left: 50%;
+  top: 58%;              /* ajustable: baja/ sube el panel */
+  transform: translate(-50%,-50%);
+  z-index:1500;
+  overflow: visible;     /* que no recorte al Mario absoluto */
+}
+
+/* dentro del contenedor mantenemos la estructura original */
+.ventas-content{
+  position: relative; /* contenedor de referencia para Mario absoluto */
+  display:flex;
+  align-items:flex-start;
+  gap:40px;
+  width:100%;
+}
+
+/* ================== Mario (posicionado relativo al contenedor) ================== */
+.ventas-mario{
+  flex: 0 0 360px; /* le damos un ancho fijo razonable */
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
+  padding-bottom:10px;
+  position:relative;
+}
+.ventas-mario img{
+  max-width:100%;
+  height:auto;
+  /* Posición absoluta dentro de .ventas-content para que no rompa el flow del form */
+  position:absolute;
+  left: -40px;    /* lo saca un poco hacia la izquierda del panel */
+  top: 35%;       /* desplaza verticalmente dentro del panel */
+  z-index:1600;
+  pointer-events:none;
+}
+
+/* ================== Formulario: recupero estilos originales ================== */
+.ventas-formulario{
+  flex:1;
+  min-width:360px;
+}
+
+/* Título */
+.ventas-title{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-size:1.8rem;
+  margin-bottom:18px;
+  font-weight:700;
+}
+
+/* Form layout */
+.ventas-form{ display:flex; flex-direction:column; gap:24px; }
+.form-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:18px; }
+.form-row{ display:flex; flex-direction:column; }
+.form-row label{ font-weight:600; margin-bottom:6px; font-size:14px; color:#222; }
+.form-row input, .form-row select{
+  padding:10px 12px;
+  border:1px solid #ccc;
+  border-radius:var(--radius);
+  font-size:14px;
+  background:#fff;
+}
+
+/* separadores */
+hr{ border:none; border-top:1px solid #e6e6e6; margin:8px 0 18px 0; }
+
+/* Productos */
+#productosSection{ margin-top:6px; }
+#productosSection h3{ font-size:1.1rem; margin-bottom:10px; color:#222; font-weight:700; }
+#productosSection .form-grid{ display:grid; grid-template-columns: 2fr 1fr 1fr auto; gap:16px; align-items:end; }
+#productosSection #agregarProducto{
+  display:flex; justify-content:center; align-items:center; height:42px; padding:0 14px; font-size:14px; font-weight:600;
+  border:none; border-radius:8px; background:var(--azul); color:#fff; cursor:pointer;
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+#productosSection #agregarProducto:hover{ transform:translateY(-2px); box-shadow:0 6px 18px rgba(0,0,0,0.12); }
+
+/* Lista de productos */
+.lista-productos{ margin-top:12px; border:1px solid #e0e0e0; border-radius:10px; overflow:hidden; background:#fafafa; }
+.lista-productos table{ width:100%; border-collapse:collapse; }
+.lista-productos th, .lista-productos td{ padding:8px 10px; text-align:left; border-bottom:1px solid #eee; font-size:14px; color:#333; }
+.lista-productos th{ background:#f7f7f7; font-weight:700; text-transform:uppercase; }
+
+/* Totales y botones finales */
+.form-total{ text-align:right; font-size:1.2rem; font-weight:700; margin-top:6px; color:#111; }
+.form-actions{ display:flex; gap:12px; justify-content:flex-end; margin-top:6px; }
+.btn{ padding:10px 16px; border:none; border-radius:8px; cursor:pointer; font-weight:700; color:#fff; font-size:14px; }
+.btn-azul{ background:var(--azul); } .btn-rojo{ background:var(--rojo); }
+
+/* Tooltip */
+.tooltip-wrap{ position:relative; }
+.tooltip{ position:absolute; top:100%; left:0; background:#333; color:#fff; font-size:12px; padding:5px 8px; border-radius:6px; margin-top:6px; white-space:nowrap; }
+.tooltip.hidden{ display:none; }
+
+/* ================== Responsive adjustments ================== */
+@media (max-width:1100px){
+  .ventas-container{ max-width:1000px; padding:28px; top:56%; }
+  .ventas-mario img{ left:-30px; top:22%; max-width:300px; }
+  .ventas-formulario{ min-width:300px; }
+}
+@media (max-width:900px){
+  /* En móviles convertimos el panel a columna y Mario arriba */
+  .ventas-container{ width:94%; left:50%; top:52%; transform:translate(-50%,-50%); padding:18px; border-radius:18px; }
+  .ventas-content{ display:flex; flex-direction:column; gap:18px; }
+  .ventas-mario{ order:-1; flex:auto; display:flex; justify-content:center; align-items:center; padding-bottom:0; position:relative; }
+  .ventas-mario img{ position:relative; left:0; top:0; width:220px; transform:none; pointer-events:none; }
+  .ventas-formulario{ width:100%; min-width:0; }
+  #productosSection .form-grid{ grid-template-columns:1fr; }
+  #productosSection #agregarProducto{ width:100%; }
+}
+
+/* ================== Mantener oculto main hasta que termine intro (si usas) ================== */
+.hidden{ display:none; }

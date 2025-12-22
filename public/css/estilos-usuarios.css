@@ -1,0 +1,112 @@
+
+:root {
+  --rojo: #e60012;
+  --azul: #0f9bd7;
+  --blanco: #ffffff;
+  --negro: #111111;
+  --radius: 12px;
+  font-family: 'Inter', sans-serif;
+}
+
+.usuarios-main { padding: 30px; }
+
+/* FORM */
+.formulario-usuarios {
+  background: var(--blanco);
+  padding: 20px;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  margin-bottom: 30px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.formulario-usuarios:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,0.15); }
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+}
+
+.form-grid input, .form-grid select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: var(--radius);
+  font-size: 15px;
+}
+
+#nombre {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+#apellidos {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+#identificacion {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+#email {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+#usuario {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+#password {
+  grid-column: 4;
+  grid-row: 1;
+}
+
+#password_confirmation {
+  grid-column: 4;
+  grid-row: 2;
+}
+
+#rol {
+  grid-column: 5;
+  grid-row: 1;
+}
+
+.btn-guardar {
+  grid-column: 6;
+  grid-row: 1;
+  height: fit-content;
+  align-self: center;
+}
+
+/* TABLA */
+.tabla-container {
+  overflow-x: auto;
+  background: var(--blanco);
+  padding: 15px;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+table { width: 100%; border-collapse: collapse; }
+th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }
+th { background: #f5f5f5; }
+tbody tr:hover { background: #f0f8ff; }
+
+/* BOTONES */
+.btn {
+  padding: 8px 12px;
+  border: none;
+  border-radius: var(--radius);
+  font-weight: bold;
+  cursor: pointer;
+  color: var(--blanco);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn-azul { background: var(--azul); }
+.btn-azul:hover { background: #0c7eac; }
+.btn-rojo { background: var(--rojo); }
+.btn-rojo:hover { background: #b5000e; }
+

@@ -2,58 +2,26 @@
 
 @section('contenido')
     
-<div class="cards">
-    <div class="card">
-      <div class="card-content">
-        <div class="number">{{ $totalClientes }}</div>
-        <div class="card-name">Clientes</div>
-      </div>
-      <div class="icon-box">
-        <i class="fas fa-users"></i>
-      </div>
+<section class="dashboard">
+  <div class="stats">
+    <div class="card rojo">
+      <h3 style="color: white;">Ventas Día</h3>
+      <p id="ventasDia" style="color: white">$0</p>
     </div>
-    <div class="card">
-      <div class="card-content">
-        <div class="number">{{ $totalInstructores }}</div>
-        <div class="card-name">Instructores</div>
-      </div>
-      <div class="icon-box">
-        <i class="fas fa-chalkboard-teacher"></i>
-      </div>
+    <div class="card azul">
+      <h3 style="color: white;">Ventas Semana</h3>
+      <p id="ventasSemana" style="color: white">$0</p>
     </div>
-    <div class="card">
-      <div class="card-content">
-        <div class="number">{{ $totalUsuarios }}</div>
-        <div class="card-name">Usuarios</div>
-      </div>
-      <div class="icon-box">
-        <i class="fas fa-user"></i>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-content">
-        <div class="number">{{ $totalUsuarios }}</div>
-        <div class="card-name">Proveedores</div>
-      </div>
-      <div class="icon-box">
-        <i class="fas fa-truck"></i>
-      </div>
+    <div class="card gris">
+      <h3 style="color: white;">Ventas Mes</h3>
+      <p id="ventasMes" style="color: white">$0</p>
     </div>
   </div>
-  <div class="charts">
-    <div class="chart">
-      <h2>Ganancias (Pasados 12 meses)</h2>
-      <div>
-        <canvas id="lineChart"></canvas>
-      </div>
-    </div>
-    <div class="chart" id="doughnut-chart">
-      <h2>Datos</h2>
-      <div>
-        <canvas id="doughnut"></canvas>
-      </div>
-    </div>
+  <div class="chart">
+    <h3>Gráfica de Ventas</h3>
+    <img src="Assets/grafica.webp" alt="Gráfico de Ventas" class="chart-img">
   </div>
-</div>
+</section>
+
 @endsection
 

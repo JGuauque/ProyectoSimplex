@@ -1,0 +1,95 @@
+
+/* Panel */
+.panel {
+  background:#fff;
+  padding:20px;
+  margin:20px;
+  border-radius:12px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+
+.hidden { display:none; }
+
+.prestamos-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:20px;
+}
+.prestamos-header h2 { margin:0; }
+
+.header-actions .btn { margin-left:10px; }
+
+/* Botones */
+.btn {
+  padding:8px 14px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:600;
+  color:#fff;
+}
+.btn-azul { background:#0f9bd7; }
+.btn-azul:hover { background:#0c7eb3; }
+.btn-rojo { background:#e60012; }
+.btn-rojo:hover { background:#b5000e; }
+
+/* Formulario */
+.form-grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+  gap:14px;
+  margin-bottom:20px;
+}
+.form-row label { display:block; font-size:0.85rem; margin-bottom:4px; }
+.form-row input, .form-row select {
+  width:100%;
+  padding:10px;
+  border:1px solid #ddd;
+  border-radius:8px;
+}
+.actions-row { grid-column:1/-1; display:flex; gap:10px; margin-top:10px; }
+
+/* Carrito */
+#carritoWrap { margin-top:20px; }
+#carritoWrap ul { list-style:none; padding:0; }
+
+/* Lista préstamos */
+.prestamos-list { display:flex; flex-direction:column; gap:14px; }
+.card-prestamo {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:#fff;
+  padding:14px 18px;
+  border-radius:10px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.05);
+}
+.card-prestamo-info { flex:1; }
+.card-prestamo-info h4 { margin:0 0 4px; }
+.card-prestamo-info p { margin:2px 0; font-size:0.85rem; color:#555; }
+.card-prestamo-actions { display:flex; gap:8px; align-items:center; }
+
+/* Estados */
+.badge { padding:4px 10px; border-radius:20px; font-size:0.8rem; font-weight:600; color:#fff; }
+.badge.prestado { background:#ff9800; }
+.badge.devuelto { background:#4caf50; }
+.badge.pago { background:#2196f3; }
+
+/* Locales */
+.cards-list { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap:16px; }
+.card-local {
+  background:#fff;
+  border-radius:12px;
+  padding:16px;
+  box-shadow:0 2px 10px rgba(0,0,0,0.08);
+}
+.card-local h4 { margin:0 0 6px; font-size:1.1rem; }
+.card-local p { margin:2px 0; font-size:0.85rem; color:#666; }
+.card-local .actions { margin-top:10px; display:flex; gap:8px; }
+
+/* Modal */
+.modal { position:fixed; inset:0; background:rgba(0,0,0,0.7); display:flex; justify-content:center; align-items:center; z-index:1000; }
+.modal.hidden { display:none; }
+.modal-card { background:#fff; padding:20px; border-radius:12px; max-width:400px; width:100%; position:relative; }
+.modal-close { position:absolute; top:10px; right:10px; background:none; border:none; font-size:20px; cursor:pointer; }
