@@ -12,6 +12,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
+
     use HasRoles;
 
     /**
@@ -19,10 +20,25 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+    // protected $fillable = [
+    //     'name',
+    //     'email',
+    //     'password',
+    //     'apellidos',
+    //     'identificacion', 
+    //     'username',
+    //     'rol'
+    // ];
+
     protected $fillable = [
         'name',
+        'apellidos',
+        'identificacion',
         'email',
+        'username',
         'password',
+        'must_change_password',
+        'password_changed_at',
     ];
 
     /**
@@ -44,6 +60,10 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
+
+            'must_change_password' => 'boolean',
+            'password_changed_at' => 'datetime',
+
             'password' => 'hashed',
         ];
     }
