@@ -1,0 +1,563 @@
+/* variables */
+:root{
+    --color-fuente:rgb(245, 247, 235);
+    --tamano-titulos:3.5rem;
+}
+ 
+/* reset html */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+body{
+    font-family: "Roboto",sans-serif;
+}
+/* header***************************************** */
+header {
+    position: relative;
+    background: url(../Assets/Home/fondo-main.jpg) no-repeat center center/cover;
+    background-attachment: fixed; /* Hace que el fondo permanezca fijo */
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+}
+header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(34, 58, 53, 0.5), rgba(31, 30, 30, 0.774));
+    z-index: 1; /* Degradado con z-index inferior al contenido */
+}
+
+/*BARRA DE NAVEGACION*/
+
+/* barra de navegacion */
+.contenedor-nav{
+    width: 100%;  
+    position: fixed;
+    top:0;
+    display: flex;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    gap: 20px;
+}
+.logo{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.logo img{
+    height: 30px;
+    width: auto;
+   
+}
+.logo span{
+    font-size: 1.5rem;
+    color: rgb(0, 255, 191);
+}
+ 
+.contenedor-nav ul{
+    display: flex;
+    list-style: none;
+    gap: 20px;
+}
+.contenedor-nav ul a{
+    color: var(--color-fuente);
+    text-decoration: none;
+}
+.contenedor-nav ul a:hover{
+    color: rgb(6, 245, 145);
+}
+
+/* Estilo especial para "Iniciar Sesión" */
+.contenedor-nav ul li.login a {
+    background-color: #00A896; /* Color de fondo */
+    color: white; /* Color del texto */
+    padding: 10px 20px; /* Espaciado interno */
+    border-radius: 50px; /* Esto crea un efecto de óvalo */
+    border: 2px solid transparent; /* Puedes agregar un borde si lo deseas */
+    transition: background-color 0.3s ease, border-color 0.3s ease; /* Suaviza la transición al pasar el cursor */
+}
+
+.contenedor-nav ul li.login a:hover {
+    background-color: transparent; /* Al pasar el cursor el fondo es transparente */
+    border-color: #00A896; /* Cambia el color del borde al pasar el cursor */
+    color: #00A896; /* Cambia el color del texto */
+}
+
+/*PRIMERA SECTION*/
+
+.hero-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    padding: 20px;
+    border-radius: 12px;
+    z-index: 2; /* Esto asegura que los elementos estén por encima del degradado */
+}
+
+.section-title {
+    color: #00A896;
+    text-transform: uppercase;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.main-title {
+    font-size: 48px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: white;
+}
+
+.description {
+    font-size: 18px;
+    color: #aaa;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 10px 20px;
+    border: 2px solid #00A896;
+    border-radius: 25px;
+    color: #00A896;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background  0.3s ease;
+}
+
+.cta-button:hover {
+    background: #00A896;
+    color: #ffffff;
+}
+
+
+/* Estilo del contenedor de la sesión */
+section.content {
+    display: flex;
+    align-items: center; /* Alinea verticalmente el contenido */
+    justify-content: space-between; /* Asegura que el texto y la imagen ocupen todo el espacio */
+    padding: 20px; /* Añade algo de espacio alrededor */
+    height: 100vh; /* Hace que la sesión ocupe toda la altura de la ventana */
+}
+
+/* Estilo de la parte de texto */
+section .text {
+    flex: 1; /* Hace que el texto ocupe el 50% */
+    padding: 20px;
+    color: white; /* Ajusta según el diseño */
+}
+
+/* Estilo de la parte de la imagen */
+section .image {
+    flex: 2; /* Hace que la imagen ocupe el 50% */
+    display: flex;
+    justify-content: center; /* Centra la imagen horizontalmente */
+    align-items: center; /* Centra la imagen verticalmente */
+}
+
+section .image img {
+    width: 100%; /* La imagen abarcará el 100% del contenedor que tiene 50% */
+    max-width: 100%; /* Asegura que la imagen no se desborde */
+    height: auto; /* Mantiene las proporciones */
+    border-radius: 20px; /* Opcional: bordes redondeados */
+}
+
+/* SEGUNDA SECTION*/
+
+/* Diseño del contenedor principal */
+.features {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas */
+    gap: 40px; /* Espaciado entre elementos */
+    padding: 40px;
+    justify-items: center; /* Centrar los items horizontalmente */
+    background-color: #00A896;
+}
+
+/* Diseño de los items individuales */
+.feature-item {
+    text-align: center; /* Centrar el texto */
+    max-width: 300px; /* Ancho máximo */
+}
+
+/* Iconos (usa una fuente de iconos como FontAwesome o similar) */
+.feature-item i {
+    font-size: 40px; /* Tamaño del ícono */
+    color: #ffffff; /* Color naranja */
+    margin-bottom: 20px; /* Espaciado debajo del ícono */
+}
+
+/* Título de cada sección */
+.feature-item h3 {
+    font-size: 1.5em; /* Tamaño de la fuente */
+    margin-bottom: 10px; /* Espaciado debajo del título */
+}
+
+/* Texto de los párrafos */
+.feature-item p {
+    font-size: 1em;
+    color: #fffcfc; /* Color del texto */
+    line-height: 1.6; /* Altura de línea para legibilidad */
+}
+
+
+
+/* TERCERA SECTION*/
+
+.feature-section {
+    position: relative;
+    background: url(../Assets/Home/fondo-main.jpg) no-repeat center center/cover;
+    height: 100vh;
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center;
+    background-attachment: fixed; /* Hace que el fondo permanezca fijo */
+    z-index: 0;
+}
+
+.feature-section::before{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom,rgba(34, 58, 53, 0.5),rgba(31, 30, 30, 0.774));
+    z-index: -1;
+}
+
+/* Subtítulo y encabezado */
+.feature-section h5 {
+    color: #00ffa3; /* Verde brillante */
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.feature-section h1 {
+    font-size: 2.5em;
+    margin: 20px 0;
+    color: white;
+}
+
+.feature-section p {
+    color: #bbb; /* Color gris claro */
+    font-size: 1em;
+    margin-bottom: 40px;
+}
+
+/* Diseño de la cuadrícula */
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columnas */
+    gap: 40px; /* Espaciado entre elementos */
+    justify-items: center;
+}
+
+/* Diseño de cada ítem */
+.feature-nav {
+    background-color: #1a1a1a; /* Fondo oscuro para los ítems */
+    padding: 20px;
+    border: 2px solid #00ffa3; /* Borde verde */
+    border-radius: 15px; /* Bordes redondeados */
+    text-align: center;
+    max-width: 300px;
+}
+
+.feature-nav img {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.feature-nav h3 {
+    color: #fff;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.feature-nav p {
+    color: #bbb;
+    font-size: 1em;
+}
+
+/* CUARTA SECCION*/
+
+.valores{
+    margin: 3;
+    font-family: Arial, sans-serif;
+    color: white;
+    background-color: #00A896; /* Fondo azul turquesa similar al de la imagen */
+    background-position: center;
+    padding: 60px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.section-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 900px;
+    text-align: center;
+}
+
+.valores h1 {
+    font-size: 3em;
+    margin: 0.5em 0;
+}
+
+.valores h3 {
+    font-size: 1em;
+    color: #5CE3C0; /* Color verde */
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.valores p {
+    font-size: 1.1em;
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto 40px;
+}
+
+.valores ul {
+    flex: 1;
+    list-style: none;
+    padding: 0;
+    text-align: left;
+    margin: 0;
+}
+.valores ul li {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+    font-size: 1.1em;
+}
+
+.valores ul li::before {
+    content: '\2714'; /* Unicode para un check mark */
+    color: #5CE3C0; /* Color verde */
+    margin-right: 10px;
+    font-size: 1.5em;
+}
+
+/*FOSTER*/
+
+.footer {
+    background-color: #222629;
+    padding: 30px 0;
+    text-align: center;
+    color: white;
+    position: relative;
+    font-family: Arial, sans-serif;
+}
+
+.footer::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background-color: #1BA598; /* Línea azul en la parte superior */
+}
+
+.social-icons {
+    margin-bottom: 20px;
+}
+
+.social-icons a {
+    margin: 0 10px;
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    border-radius: 50%;
+    background-color: #1BA598;
+    color: #222629;
+    text-align: center;
+    font-size: 20px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.social-icons a:hover {
+    background-color: #3BB7A8;
+    color: white;
+}
+
+.footer p {
+    margin: 0;
+    font-size: 14px;
+    color: #cccccc;
+}
+
+header label, input{
+    display: none;
+}
+
+@media(max-width:768px){
+    .contenedor-nav{
+        flex-direction: column;
+        width: 50%;
+        top: 0;
+        left: -100%;
+        padding: 20px 0 0 0;
+    }
+    .logo{
+        margin-bottom: 40px;
+    }
+    .contenedor-nav nav{
+        width: 100%;
+        margin: 0;
+ 
+    }
+    .contenedor-nav ul{
+        display: block;
+        width: 100%;
+        margin: 0;
+    }
+    .contenedor-nav ul li{
+        display: block;
+        margin: 0;
+        padding: 10px;
+        text-align: center;
+        border-bottom: 1px solid gray;
+ 
+ 
+    }
+    .hamburger{
+        display: block;
+        position: fixed;
+        z-index: 200;
+        top: 0;
+        left: 0;
+        margin: 0;
+        padding: 5px;
+        color: white;
+        font-size: 25px;
+        background-color: rgba(0, 0, 0, 0.568);
+        border-radius: 3px;
+    }
+    .hamburger .equis{
+        display: none;
+    }
+    header input:checked~.hamburger .equis{
+        display: inline;
+    }
+    header input:checked~.hamburger .barras{
+        display: none;
+    }
+    header input:checked~.hamburger{
+        display: inline;
+        margin: 0;
+        left: 45%;
+    }
+    header input:checked~.contenedor-nav{
+        left: 0;
+    }
+}
+
+/* General mobile styles */
+@media (max-width: 768px) {
+
+    /* Ajuste de la barra de navegación */
+    .contenedor-nav ul {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .contenedor-nav ul a {
+        font-size: 1rem;
+    }
+
+    .textos-header h1 {
+        font-size: 2.5rem; /* Reduce el tamaño de los títulos en móviles */
+    }
+
+    .textos-header p {
+        font-size: 1rem;
+    }
+
+    /* Ajuste del texto del botón */
+    .textos-header a {
+        padding: 10px 20px;
+        font-size: 1rem;
+    }
+
+    /* Ajustes de sección "conocer" */
+    .item-number {
+        font-size: 60px; /* Disminuye el tamaño del número grande */
+    }
+
+    .item-content {
+        margin-left: 80px;
+    }
+
+    /* Ajustes en la sección de ubicación */
+    .ubicacion {
+        height: auto; /* Permite que la altura sea flexible */
+        padding: 20px 0;
+    }
+
+    .contenedor-nuestra-ubicacion {
+        grid-template-columns: 1fr; /* Ajusta a una columna en móviles */
+        text-align: center;
+    }
+
+    .img-nuestra-ubicacion,
+    .contenido-textos {
+        width: 100%;
+    }
+
+    /* Ajustes en la sección de valores */
+    .valores {
+        padding: 40px 20px;
+    }
+
+    .valores h1 {
+        font-size: 2rem;
+    }
+
+    .valores p {
+        font-size: 1rem;
+    }
+
+    .valores ul li {
+        font-size: 1rem;
+    }
+
+    /* Ajustes en el footer */
+    .footer {
+        padding: 20px 10px;
+    }
+
+    .social-icons a {
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        font-size: 18px;
+    }
+}
