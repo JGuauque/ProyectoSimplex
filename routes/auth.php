@@ -19,6 +19,17 @@ Route::middleware('guest')->group(function () {
 
     Route::post('login', [AuthenticatedSessionController::class, 'store']);
 
+
+    // Login con cambio de contraseña
+    Route::post('login-with-password-change', [AuthenticatedSessionController::class, 'storeWithPasswordChange'])
+        ->name('login.with.password.change');
+    
+    // Verificar cambio de contraseña   
+    Route::post('check-password-change', [AuthenticatedSessionController::class, 'checkPasswordChange'])->name('check.password.change'); 
+    
+
+
+
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
         ->name('password.request');
 

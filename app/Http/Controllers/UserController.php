@@ -134,17 +134,17 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
-        $usuario = User::findOrFail($id);
+        // //
+        // $usuario = User::findOrFail($id);
 
-        // Evitar que el usuario actual se elimine a sí mismo
-        if ($usuario->id === auth()->id()) {
-            return redirect()->route('usuarios.index')->with('error', 'No puedes eliminar tu propio usuario');
-        }
+        // // Evitar que el usuario actual se elimine a sí mismo
+        // if ($usuario->id === auth()->id()) {
+        //     return redirect()->route('usuarios.index')->with('error', 'No puedes eliminar tu propio usuario');
+        // }
 
-        $usuario->delete();
+        // $usuario->delete();
 
-        return redirect()->route('usuarios.index')->with('success', 'Usuario eliminado exitosamente');
+        // return redirect()->route('usuarios.index')->with('success', 'Usuario eliminado exitosamente');
     }
 
     /**

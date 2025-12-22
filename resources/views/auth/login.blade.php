@@ -89,9 +89,9 @@
                     <!-- <label>
                         <input type="checkbox" name="remember"> Recordarme
                     </label> -->
-                    @if (Route::has('password.request'))
-                    <a href="{{ route('password.request') }}">¿Olvidaste contraseña?</a>
-                    @endif
+                    <!-- @if (Route::has('password.request')) -->
+                    <a href="#">¿Olvidaste contraseña?</a>
+                    <!-- @endif -->
                 </div>
 
                 <!-- Botón principal -->
@@ -125,7 +125,7 @@
         </div>
     </main>
 
-    <script>
+    <!-- <script>
         document.addEventListener('DOMContentLoaded', function() {
 
             // Al principio del script, obtener el token desde Blade
@@ -329,7 +329,7 @@
             }
 
         });
-    </script>
+    </script> -->
 </body>
 
 </html>

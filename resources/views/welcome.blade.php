@@ -37,7 +37,7 @@
                     @auth
 
                     @else
-                    <a class="btn btn-login" href="#">Iniciar sesión</a> 
+                    <a class="btn btn-login" href="{{ route('dashboard') }}">Iniciar sesión</a> 
                     @endif
                 @endauth
             </nav>
