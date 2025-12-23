@@ -98,9 +98,13 @@
                 <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Confirmar Contraseña">
                 <select id="edit_rol" name="roles[]">
 
+                        @foreach($roles as $role)
+                        <option value="{{ $role->name }}">{{ $role->name }}</option>
+                        @endforeach
+
                         <option value="Owner">Owner</option>
-                        <option value="Admin">Admin</option>
-                        <option value="User">User</option>
+                        <option value="Administrador">Administrador</option>
+                        <option value="Vendedor">Vendedor</option>
                     </select>
                 <button type="submit" class="btn btn-azul btn-guardar">Actualizar Usuario</button>
             </div>

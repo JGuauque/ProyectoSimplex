@@ -215,11 +215,15 @@
 
                 <select id="rol" name="roles[]">
 
-                    
+                    @foreach($roles as $role)
+                    <option value="{{ $role->name }}" {{ old('roles') && in_array($role->name, old('roles')) ? 'selected' : '' }}>
+                        {{ $role->name }}
+                    </option>
+                    @endforeach
 
-                    <option value="Owner" {{ old('rol') == 'Owner' ? 'selected' : '' }}>Owner</option>
+                    <!-- <option value="Owner" {{ old('rol') == 'Owner' ? 'selected' : '' }}>Owner</option>
                     <option value="Administrador" {{ old('rol') == 'Administrador' ? 'selected' : '' }}>Administrador</option>
-                    <option value="Vendedor" {{ old('rol') == 'Vendedor' ? 'selected' : '' }}>Vendedor</option>
+                    <option value="Vendedor" {{ old('rol') == 'Vendedor' ? 'selected' : '' }}>Vendedor</option> -->
                 </select>
 
                 <button type="submit" class="btn btn-azul btn-guardar">Guardar</button>
@@ -251,13 +255,13 @@
                         <td>{{ $usuario->identificacion }}</td>
                         <td>{{ $usuario->email }}</td>
                         <td>{{ $usuario->username }}</td>
-                        <td>{{ $usuario->rol }}</td>
+                        <!-- <td>{{ $usuario->rol }}</td> -->
 
-                        <!-- <td>
+                        <td>
                             @foreach($usuario->roles as $role)
                             <span class="badge" style="color:white; background:#2196f3;">{{ $role->name }}</span>
                             @endforeach
-                        </td> -->
+                        </td>
 
                         <td>
                             <button class="btn btn-azul" onclick="abrirModalEditar(<?php echo $usuario->id; ?>)">Editar</button>
@@ -269,7 +273,7 @@
                                 Resetear Contraseña
                             </button> -->
 
-                            <!-- @if(auth()->user()->can('resetear contraseña'))
+                            @if(auth()->user()->can('resetear contraseña'))
                             @php
                             $userAutenticado = auth()->user();
                             $mostrarBotonReset = true;
@@ -289,7 +293,7 @@
                                 Resetear Contraseña
                             </button>
                             @endif
-                            @endif -->
+                            @endif
 
                             <form action="{{ route('usuarios.destroy', $usuario->id) }}" method="POST" style="display: inline;">
                                 @csrf
@@ -326,11 +330,15 @@
                     <input type="password" id="edit_password_confirmation" name="password_confirmation" placeholder="Confirmar Contraseña">
                     <select id="edit_rol" name="roles[]">
 
+                        @foreach($roles as $role)
+                        <option value="{{ $role->name }}">{{ $role->name }}</option>
+                        @endforeach
+
                         
 
-                        <option value="Owner">Owner</option>
-                        <option value="Admin">Admin</option>
-                        <option value="User">User</option>
+                        <!-- <option value="Owner">Owner</option>
+                        <option value="Administrador">Administrador</option>
+                        <option value="Vendedor">Vendedor</option> -->
                     </select>
                     <button type="submit" class="btn btn-azul btn-guardar-modal">Actualizar</button>
 

@@ -26,6 +26,15 @@ class LoginRequest extends FormRequest
      */
     public function rules(): array
     {
+        // Si viene el campo de cambio de contraseña, validar diferente
+        if ($this->has('requires_password_change') && $this->input('requires_password_change') == '1') {
+            return [
+                'email' => ['required', 'string', 'email'],
+                'new_password' => ['required', 'string', 'min:8', 'confirmed'],
+            ];
+        }
+        
+        // Validación normal para login
         return [
             'email' => ['required', 'string', 'email'],
             'password' => ['required', 'string'],
@@ -40,6 +49,11 @@ class LoginRequest extends FormRequest
     public function authenticate(): void
     {
         $this->ensureIsNotRateLimited();
+
+        // Si está en modo cambio de contraseña, no validar credenciales
+        if ($this->has('requires_password_change') && $this->input('requires_password_change') == '1') {
+            return;
+        }
 
         if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());

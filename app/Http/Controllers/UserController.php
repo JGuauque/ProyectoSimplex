@@ -21,10 +21,10 @@ class UserController extends Controller
     public function index()
     {
         //
-        $usuarios = User::orderBy('created_at', 'desc')->get();
-        // $roles = Role::all(); // Para los selects
-        // return view('usuarios.index', compact('usuarios', 'roles'));
-        return view('usuarios.index', compact('usuarios'));
+        $usuarios = User::with('roles')->get();
+        $roles = Role::all(); // Para los selects
+        return view('usuarios.index', compact('usuarios', 'roles'));
+        // return view('usuarios.index', compact('usuarios'));
     }
 
     /**
@@ -50,7 +50,7 @@ class UserController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'username' => 'required|string|max:255|unique:users',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            // 'roles' => 'required|array',
+            'roles' => 'required|array',
         ]);
 
         // Crear usuario
@@ -61,11 +61,11 @@ class UserController extends Controller
             'email' => $request->email,
             'username' => $request->username,
             'password' => Hash::make($request->password),
-            'rol' => $request->rol,
+            // 'rol' => $request->rol,
         ]);
 
         // Asignar roles
-        // $user->syncRoles($request->roles);
+        $user->syncRoles($request->roles);
 
         return redirect()->route('usuarios.index')
             ->with('success', 'Usuario creado exitosamente');
@@ -95,7 +95,7 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $usuario = User::findOrFail($id);
+         $usuario = User::findOrFail($id);
 
         $request->validate([
             'name' => 'required|string|max:255',
@@ -105,7 +105,7 @@ class UserController extends Controller
             'username' => 'required|string|max:255|unique:users,username,' . $id,
             'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
             // 'rol' => 'required|in:Owner,Administrador,Vendedor',
-            // 'roles' => 'required|array',
+            'roles' => 'required|array',
         ]);
 
         $data = [
@@ -114,7 +114,7 @@ class UserController extends Controller
             'identificacion' => $request->identificacion,
             'email' => $request->email,
             'username' => $request->username,
-            'rol' => $request->rol,
+            // 'rol' => $request->rol,
         ];
 
         if ($request->password) {
