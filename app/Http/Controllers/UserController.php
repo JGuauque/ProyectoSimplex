@@ -104,7 +104,7 @@ class UserController extends Controller
             'email' => 'required|string|email|max:255|unique:users,email,' . $id,
             'username' => 'required|string|max:255|unique:users,username,' . $id,
             'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
-            'rol' => 'required|in:Owner,Administrador,Vendedor',
+            // 'rol' => 'required|in:Owner,Administrador,Vendedor',
             // 'roles' => 'required|array',
         ]);
 

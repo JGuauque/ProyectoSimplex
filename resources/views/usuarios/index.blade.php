@@ -329,8 +329,8 @@
                         
 
                         <option value="Owner">Owner</option>
-                        <option value="Administrador">Administrador</option>
-                        <option value="Vendedor">Vendedor</option>
+                        <option value="Admin">Admin</option>
+                        <option value="User">User</option>
                     </select>
                     <button type="submit" class="btn btn-azul btn-guardar-modal">Actualizar</button>
 
