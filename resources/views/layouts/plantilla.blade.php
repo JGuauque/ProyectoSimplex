@@ -59,9 +59,9 @@
       @can('ver ventas')
         <a href="{{ route('ventas.create') }}"><i class="fa-solid fa-cash-register"></i> Ventas</a>
       @endcan -->
-      <a href="#" class="active"><i class="fa-solid fa-house"></i> Dashboard</a>
+      <a href="{{ route('dashboard') }}" class="active"><i class="fa-solid fa-house"></i> Dashboard</a>
       <a href="#"><i class="fa-solid fa-clock"></i> Turno</a>
-      <a href="#"><i class="fa-solid fa-user-gear"></i> Usuarios</a>
+      <a href="{{ route('usuarios.index') }}"><i class="fa-solid fa-user-gear"></i> Usuarios</a>
       <a href="#"><i class="fa-solid fa-users"></i> Clientes</a>
       <a href="#"><i class="fa-solid fa-boxes-stacked"></i> Inventario</a>
       <a href="#"><i class="fa-solid fa-handshake"></i> Préstamos</a>
