@@ -45,10 +45,10 @@ class UserController extends Controller
         // Validación
         $request->validate([
             'name' => 'required|string|max:255',
-            // 'apellidos' => 'nullable|string|max:255',
-            // 'identificacion' => 'required|string|unique:users',
-            // 'email' => 'required|string|email|max:255|unique:users',
-            // 'username' => 'required|string|max:255|unique:users',
+            'apellidos' => 'nullable|string|max:255',
+            'identificacion' => 'required|string|unique:users',
+            'email' => 'required|string|email|max:255|unique:users',
+            'username' => 'required|string|max:255|unique:users',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             // 'roles' => 'required|array',
         ]);
@@ -56,12 +56,12 @@ class UserController extends Controller
         // Crear usuario
         $user = User::create([
             'name' => $request->name,
-            // 'apellidos' => $request->apellidos,
-            // 'identificacion' => $request->identificacion,
-            // 'email' => $request->email,
-            // 'username' => $request->username,
+            'apellidos' => $request->apellidos,
+            'identificacion' => $request->identificacion,
+            'email' => $request->email,
+            'username' => $request->username,
             'password' => Hash::make($request->password),
-            // 'rol' => $request->rol,
+            'rol' => $request->rol,
         ]);
 
         // Asignar roles
