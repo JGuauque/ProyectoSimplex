@@ -2,7 +2,7 @@
 
 @section('contenido')
     
-<section class="dashboard">
+<section class="dashboard" style="margin: 90px; padding: 5px;">
   <div class="stats">
     <div class="card rojo">
       <h3 style="color: white;">Ventas Día</h3>

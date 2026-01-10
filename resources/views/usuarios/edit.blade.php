@@ -102,9 +102,9 @@
                         <option value="{{ $role->name }}">{{ $role->name }}</option>
                         @endforeach
 
-                        <option value="Owner">Owner</option>
+                        <!-- <option value="Owner">Owner</option>
                         <option value="Administrador">Administrador</option>
-                        <option value="Vendedor">Vendedor</option>
+                        <option value="Vendedor">Vendedor</option> -->
                     </select>
                 <button type="submit" class="btn btn-azul btn-guardar">Actualizar Usuario</button>
             </div>

@@ -154,64 +154,25 @@
     .modal-body {
         padding: 20px;
     }
-
-    .alert {
-        padding: 15px;
-        margin-bottom: 20px;
-        border: 1px solid transparent;
-        border-radius: var(--radius);
-    }
-
-    .alert-success {
-        background: #d4edda;
-        color: #155724;
-        border-color: #c3e6cb;
-    }
-
-    .alert-danger {
-        background: #f8d7da;
-        color: #721c24;
-        border-color: #f5c6cb;
-    }
 </style>
 
 <div class="usuarios-main">
-    <!-- Mensajes -->
-    @if(session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-    @endif
-
-    @if(session('error'))
-    <div class="alert alert-danger">
-        {{ session('error') }}
-    </div>
-    @endif
-
-    @if($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach($errors->all() as $error)
-            <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-    @endif
 
     <!-- Formulario Crear -->
     <section class="formulario-usuarios">
-        <h2>Crear Nuevo Usuario</h2>
+        <strong>
+            <h2 style="font-size: 24px; margin-bottom: 15px;">Crear Nuevo Usuario</h2>
+        </strong>
         <form method="POST" action="{{ route('usuarios.store') }}" id="formCrearUsuario">
             @csrf
             <div class="form-grid">
-                <input type="text" id="nombres" name="name" placeholder="Nombres" required value="{{ old('name') }}">
-                <input type="text" id="apellidos" name="apellidos" placeholder="Apellidos" value="{{ old('apellidos') }}">
-                <input type="text" id="identificacion" name="identificacion" placeholder="ID" required value="{{ old('identificacion') }}">
-                <input type="email" id="email" name="email" placeholder="Email" required value="{{ old('email') }}">
-                <input type="text" id="usuario" name="username" placeholder="Usuario" required value="{{ old('username') }}">
-                <input type="password" id="password" name="password" placeholder="Contraseña" required>
-                <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Confirmar Contraseña" required>
+                <input type="text" id="nombres" name="name" placeholder="Nombres *" required value="{{ old('name') }}">
+                <input type="text" id="apellidos" name="apellidos" placeholder="Apellidos *" required value="{{ old('apellidos') }}">
+                <input type="text" id="identificacion" name="identificacion" placeholder="Documento *" required value="{{ old('identificacion') }}">
+                <input type="email" id="email" name="email" placeholder="Email *" required value="{{ old('email') }}">
+                <input type="text" id="usuario" name="username" placeholder="Usuario *" required value="{{ old('username') }}">
+                <input type="password" id="password" name="password" placeholder="Contraseña *" required>
+                <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Confirmar Contraseña *" required>
 
                 <select id="rol" name="roles[]">
 
@@ -232,8 +193,10 @@
     </section>
 
     <!-- Tabla de Usuarios -->
-    <section class="listado-section">
-        <h2>Usuarios Registrados</h2>
+    <section class="listado-section" style="margin: 70px; margin-top:10px; padding: 20px;">
+        <strong>
+            <h2 style="font-size: 24px; margin-bottom:0px">Usuarios Registrados</h2>
+        </strong>
         <div class="tabla-container">
             <table>
                 <thead>
@@ -313,7 +276,10 @@
 <div id="modalEditar" class="modal">
     <div class="modal-content">
         <div class="modal-header">
-            <h2>Editar Usuario</h2>
+            <strong>
+                <h2 style="font-size: 24px;">Editar Usuario</h2>
+            </strong>
+
             <!-- <button class="close-modal" onclick="cerrarModalEditar()">&times;</button> -->
         </div>
         <div class="modal-body">
@@ -329,17 +295,19 @@
                     <input type="password" id="edit_password" name="password" placeholder="Contraseña (dejar en blanco para no cambiar)">
                     <input type="password" id="edit_password_confirmation" name="password_confirmation" placeholder="Confirmar Contraseña">
                     <select id="edit_rol" name="roles[]">
+                        @foreach($roles as $role)
+                        <option value="{{ $role->name }}"
+                            @if(isset($usuario) && $usuario->hasRole($role->name)) selected @endif>
+                            {{ $role->name }}
+                        </option>
+                        @endforeach
+                    </select>
+                    <!-- <select id="edit_rol" name="roles[]">
 
                         @foreach($roles as $role)
                         <option value="{{ $role->name }}">{{ $role->name }}</option>
                         @endforeach
-
-                        
-
-                        <!-- <option value="Owner">Owner</option>
-                        <option value="Administrador">Administrador</option>
-                        <option value="Vendedor">Vendedor</option> -->
-                    </select>
+                    </select> -->
                     <button type="submit" class="btn btn-azul btn-guardar-modal">Actualizar</button>
 
                     <button type="button" class="btn btn-rojo btn-cancelar-modal" onclick="cerrarModalEditar()">Cancelar</button>
@@ -362,7 +330,21 @@
                 document.getElementById('edit_identificacion').value = usuario.identificacion;
                 document.getElementById('edit_email').value = usuario.email;
                 document.getElementById('edit_usuario').value = usuario.username;
-                document.getElementById('edit_rol').value = usuario.rol;
+                // Obtener el primer rol del usuario (si tiene)
+                const rolSelect = document.getElementById('edit_rol');
+                if (usuario.roles && usuario.roles.length > 0) {
+                    // Seleccionar el rol actual del usuario
+                    const userRoleName = usuario.roles[0].name;
+
+                    // Buscar la opción que coincida con el rol del usuario
+                    for (let i = 0; i < rolSelect.options.length; i++) {
+                        if (rolSelect.options[i].value === userRoleName) {
+                            rolSelect.selectedIndex = i;
+                            break;
+                        }
+                    }
+                }
+                // document.getElementById('edit_rol').value = usuario.rol;
 
                 // Actualizar la acción del formulario
                 document.getElementById('formEditarUsuario').action = `/usuarios/${usuarioId}`;

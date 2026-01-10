@@ -8,15 +8,19 @@
   font-family: 'Inter', sans-serif;
 }
 
-.usuarios-main { padding: 30px; }
+.usuarios-main { 
+  margin: 0px;
+  padding: 30px; 
+}
 
 /* FORM */
 .formulario-usuarios {
+  margin: 90px;
   background: var(--blanco);
   padding: 20px;
   border-radius: var(--radius);
   box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  margin-bottom: 30px;
+  margin-bottom: 0px;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 .formulario-usuarios:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,0.15); }

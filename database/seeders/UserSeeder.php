@@ -2,31 +2,36 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\User; // Asegúrate de importar correctamente el modelo User
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
+use Carbon\Carbon;
 
 class UserSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        //
-        $user=new User();
-        $user->name='Admin';
-        $user->email='admin@sugus.com';
-        $user->password=bcrypt('12345678');
-        $user->save();
-        $user->assignRole('admin');
 
+        // Crear usuario
+        $user = User::firstOrCreate(
+            ['email' => 'admin@demo.com'],
+            [
+                'name' => 'Administrador',
+                'apellidos' => 'Sistema',
+                'identificacion' => '1234567890',
+                'username' => 'admin',
+                'email_verified_at' => Carbon::now(),
+                'password' => Hash::make('password123'),
+                'must_change_password' => false,
+                'password_changed_at' => Carbon::now(),
+            ]
+        );
 
-        $user=new User();
-        $user->name='User';
-        $user->email='User@sugus.com';
-        $user->password=bcrypt('12345678');
-        $user->save();
-        $user->assignRole('user');
+        // Asignar rol
+        if (! $user->hasRole('Administrador')) {
+            $user->assignRole('Administrador');
+        }
     }
 }
+
