@@ -15,11 +15,13 @@ body {
 
 /* ===== CONTENEDOR PRINCIPAL ===== */
 .clientes-main {
-    padding: 15px 30px 30px 30px;
+    margin: 105px;
+    padding: 15px;
 }
 
 /* ===== FORMULARIO FIJO ===== */
 .formulario-clientes {
+    margin-top: 20px;
     position: flex;
     top: 80px;
     /* altura del header */
@@ -41,10 +43,56 @@ body {
     margin-bottom: 10px;
 }
 
-.formulario-clientes .form-grid {
+.formulario-clientes
+
+.form-grid 
+    {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 12px;
+}
+
+.form-grid-2 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+#edit_nombre {
+    grid-column: 1 / span 1;
+    grid-row: 1;
+}
+
+#edit_identificacion {
+    grid-column: 1 / span 1;
+    grid-row: 2;
+}
+
+#edit_email {
+    grid-column: 2 / span 1;
+    grid-row: 1;
+}
+
+#edit_telefono {
+    grid-column: 2 / span 1;
+    grid-row: 2;
+}
+
+/* BOTONES DEL MODAL - CORREGIDOS */
+.btn-guardar-modal {
+    grid-column: 3 / span 1;
+    grid-row: 1;
+    height: fit-content;
+    align-self: center;
+    padding: 5px;
+}
+
+.btn-cancelar-modal {
+    grid-column: 3 / span 1;
+    grid-row: 2;
+    height: fit-content;
+    align-self: center;
+    padding: 5px;
 }
 
 input {

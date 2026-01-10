@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\ClienteController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
@@ -85,6 +86,11 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('inventario', ProductoController::class);
     Route::get('/inventario/{id}/get-data', [ProductoController::class, 'getProductoData'])->name('inventario.get-data');
+
+    Route::resource('clientes', ClienteController::class);
+    Route::get('/clientes', [ClienteController::class, 'index'])->name('cliente.index');
+    Route::get('/clientes/{cliente}/ventas', [ClienteController::class, 'getVentas'])->name('clientes.ventas');
+    Route::get('/buscar-clientes', [ClienteController::class, 'buscar'])->name('clientes.buscar');
 
 
 

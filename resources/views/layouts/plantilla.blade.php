@@ -45,7 +45,7 @@
       @endcan
       
       @can('ver clientes')
-        <a href="#"><i class="fa-solid fa-users"></i> Clientes</a>
+        <a href="{{ route('cliente.index') }}"><i class="fa-solid fa-users"></i> Clientes</a>
       @endcan
       
       @can('ver inventario')
