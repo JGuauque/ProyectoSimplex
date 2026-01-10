@@ -3,7 +3,8 @@
 .panel {
   background:#fff;
   padding:20px;
-  margin:20px;
+  margin:70px;
+  margin-top: 30px;
   border-radius:12px;
   box-shadow:0 4px 12px rgba(0,0,0,0.08);
 }
@@ -11,10 +12,14 @@
 .hidden { display:none; }
 
 .prestamos-header {
+  margin:60px;
+  margin-top: 100px;
+  margin-bottom: 0;
+  padding: 20px;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin:20px;
+  
 }
 .prestamos-header h2 { margin:0; }
 
@@ -93,3 +98,6 @@
 .modal.hidden { display:none; }
 .modal-card { background:#fff; padding:20px; border-radius:12px; max-width:400px; width:100%; position:relative; }
 .modal-close { position:absolute; top:10px; right:10px; background:none; border:none; font-size:20px; cursor:pointer; }
+
+
+

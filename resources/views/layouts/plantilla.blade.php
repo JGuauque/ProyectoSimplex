@@ -59,7 +59,7 @@
       @endcan
 
       @can('ver prestamos')
-      <a href="#"><i class="fa-solid fa-handshake"></i> Préstamos</a>
+      <a href="{{ route('prestamo.index') }}"><i class="fa-solid fa-handshake"></i> Préstamos</a>
       @endcan
 
       @can('ver ventas')

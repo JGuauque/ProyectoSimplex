@@ -8,6 +8,7 @@ use App\Http\Controllers\VentaController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\TurnoController;
+use App\Http\Controllers\PrestamoController;
 use App\Http\Controllers\LocalAliadoController;
 use App\Http\Middleware\VerificarTurnoActivo;
 use App\Http\Controllers\Auth\LoginController;
@@ -196,7 +197,18 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::get('/clientes/{cliente}/ventas', [ClienteController::class, 'getVentas'])->name('clientes.ventas');
     Route::get('/buscar-clientes', [ClienteController::class, 'buscar'])->name('clientes.buscar');
 
-    
+    // Gestión de préstamos (vista principal)
+    Route::get('/prestamos', [PrestamoController::class, 'index'])->name('prestamo.index');
+    // Crear préstamo (POST)
+    Route::post('/prestamos', [PrestamoController::class, 'store'])->name('prestamos.store');
+    // Cambiar estado de préstamo
+    Route::put('/prestamos/{prestamo}/estado', [PrestamoController::class, 'updateEstado'])
+        ->name('prestamos.estado');
+    // Eliminar préstamo
+    Route::delete('/prestamos/{prestamo}', [PrestamoController::class, 'destroy'])
+        ->name('prestamos.destroy');
+    // Locales aliados
+    Route::resource('locales-aliados', LocalAliadoController::class);
 });
 
 // ========== RUTAS API (Para AJAX/JavaScript) ==========
@@ -224,7 +236,13 @@ Route::prefix('api')->group(function () {
     });
 
 
-    
+    // Rutas para locales aliados (API)
+    Route::prefix('locales-aliados')->group(function () {
+        Route::get('/', [LocalAliadoController::class, 'index'])->name('locales.index');
+        Route::post('/', [LocalAliadoController::class, 'store'])->name('locales.store');
+        Route::put('/{local}', [LocalAliadoController::class, 'update'])->name('locales.update');
+        Route::delete('/{local}', [LocalAliadoController::class, 'destroy'])->name('locales.destroy');
+    });
     Route::get('/api/productos-con-stock', function () {
         $productos = \App\Models\Producto::where('stock', '>', 0)->get();
         return response()->json($productos);
