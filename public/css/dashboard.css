@@ -149,53 +149,66 @@ main {
   margin-top: 70px;
 }
 
-/* ====== DASHBOARD STATS ====== */
-.stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  margin-bottom: 30px;
+/* Estilos para el dashboard */
+.dashboard .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
 }
 
-.card {
-  padding: 20px;
-  border-radius: 12px;
-  text-align: center;
-  font-weight: bold;
-  color: #fff;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+.dashboard .card {
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s;
 }
 
-.card h3 {
-  margin-bottom: 10px;
-  font-size: 16px;
-  color: white;
+.dashboard .card:hover {
+    transform: translateY(-5px);
 }
 
-.card p {
-  font-size: 20px;
+.card.rojo {
+    background: linear-gradient(135deg, #ff6b6b, #e60012);
 }
 
-.card.rojo { background-color: #e60012; }
-.card.azul { background-color: #0f6ab4; }
-.card.gris { background-color: #444; }
-
-/* ====== CHART ====== */
-.chart {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+.card.azul {
+    background: linear-gradient(135deg, #4eadcdff, #0f6ab4);
 }
 
-.chart h3 { margin-bottom: 15px; font-size: 18px; }
+.card.gris {
+    background: linear-gradient(135deg, #666e76, #444);
+}
 
-.chart-img {
-  width: 100%;       /* ocupa el 80% del contenedor */
-  max-width: 600px; /* no pasa de 600px */
-  height: 600px;     /* mantiene proporción */
-  display: block;
-  margin: 0 auto;   /* la centra */
+.chart-container {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Estilos para checkboxes de categorías */
+.categoria-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: #f3f4f6;
+    border-radius: 20px;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s;
+}
+
+.categoria-checkbox:hover {
+    background: #e5e7eb;
+    transform: translateY(-1px);
+}
+
+.categoria-checkbox input[type="checkbox"]:checked + span {
+    font-weight: 600;
+    color: #111827;
 }
 
 /* ====== RESPONSIVE ====== */

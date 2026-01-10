@@ -1,11 +1,11 @@
 <section>
     <header>
         <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-            {{ __('Profile Information') }}
+            {{ __('Información del perfil') }}
         </h2>
 
         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            {{ __("Update your account's profile information and email address.") }}
+            {{ __("Información del perfil y la dirección de correo electrónico de tu cuenta.") }}
         </p>
     </header>
 
@@ -17,48 +17,62 @@
         @csrf
         @method('patch')
 
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
-            <x-input-error class="mt-2" :messages="$errors->get('name')" />
-        </div>
+        <!-- Información Básica -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <x-input-label for="name" :value="__('Nombre completo')" />
+                <x-text-input id="name" name="name" type="text" class="mt-1 block w-full"
+                    :value="old('name', $user->name)" required autofocus autocomplete="name" readonly/>
+                <x-input-error class="mt-2" :messages="$errors->get('name')" />
+            </div>
 
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
-            <x-input-error class="mt-2" :messages="$errors->get('email')" />
+            <div>
+                <x-input-label for="email" :value="__('Correo electrónico')" />
+                <x-text-input id="email" name="email" type="email" class="mt-1 block w-full"
+                    :value="old('email', $user->email)" required autocomplete="username" readonly/>
+                <x-input-error class="mt-2" :messages="$errors->get('email')" />
+            </div>
 
-            @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
-                <div>
-                    <p class="text-sm mt-2 text-gray-800 dark:text-gray-200">
-                        {{ __('Your email address is unverified.') }}
-
-                        <button form="send-verification" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
-                            {{ __('Click here to re-send the verification email.') }}
-                        </button>
-                    </p>
-
-                    @if (session('status') === 'verification-link-sent')
-                        <p class="mt-2 font-medium text-sm text-green-600 dark:text-green-400">
-                            {{ __('A new verification link has been sent to your email address.') }}
-                        </p>
-                    @endif
+            <div>
+                <x-input-label for="identificacion" :value="__('Documento de identidad')" />
+                <x-text-input id="identificacion" name="identificacion" type="text"
+                    class="mt-1 block w-full" :value="old('identificacion', $user->identificacion)"
+                    placeholder="Cédula, NIT, Pasaporte" readonly/>
+                <x-input-error class="mt-2" :messages="$errors->get('identificacion')" />
+            </div>
+            <!-- Información de Roles (solo lectura) -->
+            @if($user->roles->count() > 0)
+            <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                <h3 class="text-md font-medium text-gray-900 dark:text-gray-100 mb-2">
+                    {{ __('Roles asignados') }}
+                </h3>
+                <div class="flex flex-wrap gap-2">
+                    @foreach($user->roles as $role)
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium 
+                    bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200" style="color: white;">
+                        <i class="fas fa-user-shield mr-2" style="color: white;">­</i>
+                        {{ ucfirst($role->name) }}
+                    </span>
+                    @endforeach
                 </div>
+                <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                    {{ __('Los roles definen los permisos de acceso en el sistema. Contacta al administrador para cambios.') }}
+                </p>
+            </div>
             @endif
+
+            <!-- Información de Estado (solo lectura) -->
+            <div>
+                <x-input-label :value="__('Estado de la cuenta')" />
+                <div class="mt-2 flex items-center">
+                    <p class="ml-4 text-sm text-gray-600 dark:text-gray-400">
+                        {{ __('Fecha de registro: ') }} {{ $user->created_at->format('d/m/Y') }}
+                    </p>
+                </div>
+            </div>
+
         </div>
 
-        <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('Save') }}</x-primary-button>
 
-            @if (session('status') === 'profile-updated')
-                <p
-                    x-data="{ show: true }"
-                    x-show="show"
-                    x-transition
-                    x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-gray-600 dark:text-gray-400"
-                >{{ __('Saved.') }}</p>
-            @endif
-        </div>
     </form>
 </section>
