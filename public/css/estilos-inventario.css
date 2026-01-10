@@ -10,12 +10,16 @@
   font-family:'Inter',sans-serif;
 }
 
-.inventario-main { padding: 20px; }
+.inventario-main { 
+  margin: 60px;
+  padding: 20px; 
+}
 
 /* ===== FORMULARIO ===== */
 .formulario-inventario {
+  margin-top: 40px;
   background:var(--blanco);
-  margin:20px;
+  /* margin:20px; */
   padding:18px;
   border-radius:var(--radius);
   box-shadow:0 6px 18px rgba(0,0,0,0.08);

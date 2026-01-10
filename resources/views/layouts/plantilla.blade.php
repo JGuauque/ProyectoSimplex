@@ -30,6 +30,10 @@
 
 <body>
 
+  <!-- CONTENEDOR DE ALERTAS GLOBAL (Se muestra en TODAS las páginas) -->
+  <div class="alert-container" id="alertContainer">
+  </div>
+
   <!-- Sidebar -->
   <aside id="sidebar" class="sidebar">
     <div class="sidebar-header">
@@ -65,7 +69,13 @@
       @can('ver ventas')
       <a href="{{ route('ventas.create') }}"><i class="fa-solid fa-cash-register"></i> Ventas</a>
       @endcan
-      
+      <!-- <a href="{{route('dashboard')}}" class="active"><i class="fa-solid fa-house"></i> Dashboard</a>
+      <a href="{{route('turno.index')}}"><i class="fa-solid fa-clock"></i> Turno</a>
+      <a href="{{route('usuarios.index')}}"><i class="fa-solid fa-user-gear"></i> Usuarios</a>
+      <a href="{{route('cliente.index')}}"><i class="fa-solid fa-users"></i> Clientes</a>
+      <a href="{{route('inventario.index')}}"><i class="fa-solid fa-boxes-stacked"></i> Inventario</a>
+      <a href="{{ route('prestamo.index') }}"><i class="fa-solid fa-handshake"></i> Préstamos</a>
+      <a href="{{ route('ventas.create') }}"><i class="fa-solid fa-cash-register"></i> Ventas</a> -->
     </nav>
   </aside>
 
