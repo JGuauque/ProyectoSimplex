@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
   <!-- <link rel="stylesheet" href="css/dashboard.css"> -->
   <link rel="stylesheet" href="css/estilos-usuarios.css"><!-- estilos propios -->
-  <link rel="stylesheet" href="css/estilos-inventario.css"><!-- estilos inventario -->
+  <link rel="stylesheet" href="{{ asset('css/estilos-inventario.css') }}"><!-- estilos inventario -->
   <link rel="stylesheet" href="{{ asset('css/estilos-ventas.css') }}">
   <link rel="stylesheet" href="{{ asset('css/estilos-clientes.css') }}">
   <link rel="stylesheet" href="{{ asset('css/estilos-turnos.css') }}">
@@ -49,7 +49,7 @@
       @endcan
       
       @can('ver inventario')
-        <a href="#"><i class="fa-solid fa-boxes-stacked"></i> Inventario</a>
+        <a href="{{ route('inventario.index') }}"><i class="fa-solid fa-boxes-stacked"></i> Inventario</a>
       @endcan
       
       @can('ver prestamos')

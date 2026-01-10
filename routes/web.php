@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProductoController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
@@ -81,6 +82,9 @@ Route::middleware('auth')->group(function () {
             'message' => 'Contraseña actualizada exitosamente'
         ]);
     })->middleware('auth');
+
+    Route::resource('inventario', ProductoController::class);
+    Route::get('/inventario/{id}/get-data', [ProductoController::class, 'getProductoData'])->name('inventario.get-data');
 
 
 
