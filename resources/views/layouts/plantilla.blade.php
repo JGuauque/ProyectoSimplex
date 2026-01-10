@@ -57,7 +57,7 @@
       @endcan
       
       @can('ver ventas')
-        <a href="#"><i class="fa-solid fa-cash-register"></i> Ventas</a>
+        <a href="{{ route('ventas.create') }}"><i class="fa-solid fa-cash-register"></i> Ventas</a>
       @endcan
       
     </nav>

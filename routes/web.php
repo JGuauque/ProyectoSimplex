@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\VentaController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
@@ -26,7 +27,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-// RUTAS PARA EL MODULO USUARIOS 
+    // RUTAS PARA EL MODULO USUARIOS 
 
     Route::resource('usuarios', UserController::class);
 
@@ -92,10 +93,38 @@ Route::middleware('auth')->group(function () {
     Route::get('/clientes/{cliente}/ventas', [ClienteController::class, 'getVentas'])->name('clientes.ventas');
     Route::get('/buscar-clientes', [ClienteController::class, 'buscar'])->name('clientes.buscar');
 
+    Route::get('/ventas/create', [VentaController::class, 'create'])->name('ventas.create');
+    Route::post('/ventas', [VentaController::class, 'store'])->name('ventas.store');
+    Route::get('/buscar-productos', function (Request $request) {
+
+        $query = $request->get('q');
+
+        $productos = \App\Models\Producto::when($query, function ($q) use ($query) {
+            return $q->where('nombre', 'like', "%{$query}%")
+                ->orWhere('codigo', 'like', "%{$query}%");
+        })
+            ->where('stock', '>', 0) // Solo productos con stock disponible
+            ->limit(20)
+            ->orderBy('nombre')
+            ->get(['id', 'nombre', 'codigo', 'precio', 'stock']);
+
+        return response()->json($productos);
+
+        // $query = $request->get('q');
+
+        // $productos = \App\Models\Producto::where('nombre', 'LIKE', "%{$query}%")
+        //     ->orWhere('codigo', 'LIKE', "%{$query}%")
+        //     ->where('stock', '>', 0)
+        //     ->select('id', 'nombre', 'codigo', 'precio', 'stock')
+        //     ->limit(10)
+        //     ->get();
+
+        // return response()->json($productos);
+    });
+
 
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

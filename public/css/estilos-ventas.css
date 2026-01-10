@@ -52,8 +52,15 @@ body{
 /* ================== Fondo 50/50 del módulo ================== */
 /* El .ventas-bg empieza desde el tope de la página: como header es sticky,
    el header quedará encima y no habrá franjas. */
+
+#mainContent{
+  margin: 0px;
+  padding: 0px;
+}
+
 .ventas-bg{
-  width:100%;
+  width:100vw;
+  height: 100vh;
   min-height:calc(100vh - var(--header-height));
   margin-top:0; /* no desplazamiento adicional */
   background: linear-gradient(to right, var(--rojo) 50%, var(--azul) 50%);
@@ -63,6 +70,7 @@ body{
   padding: 40px 20px;
   position:relative;
   z-index:1;
+  
 }
 
 /* ================== Contenedor blanco (FIXED y con la estructura intacta) ================== */
@@ -72,6 +80,7 @@ body{
   border-radius: 26px;
   width: calc(100% - 80px);
   max-width: 1400px;
+  max-height: 80vh; /* Limita la altura máxima */
   box-shadow: 0 10px 40px rgba(0,0,0,0.15);
   box-sizing:border-box;
 
@@ -81,7 +90,32 @@ body{
   top: 58%;              /* ajustable: baja/ sube el panel */
   transform: translate(-50%,-50%);
   z-index:1500;
-  overflow: visible;     /* que no recorte al Mario absoluto */
+
+  overflow-y: auto; /* Habilita scroll vertical */
+  overflow-x: hidden; /* Previene scroll horizontal */
+
+  /* Personalización del scroll */
+  scrollbar-width: thin; /* Para Firefox */
+  scrollbar-color: var(--azul) #f1f1f1; /* Para Firefox */
+}
+
+/* Estilos personalizados para el scrollbar (Webkit browsers) */
+.ventas-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.ventas-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.ventas-container::-webkit-scrollbar-thumb {
+  background: var(--azul);
+  border-radius: 4px;
+}
+
+.ventas-container::-webkit-scrollbar-thumb:hover {
+  background: #0d86c2;
 }
 
 /* dentro del contenedor mantenemos la estructura original */
@@ -91,6 +125,7 @@ body{
   align-items:flex-start;
   gap:40px;
   width:100%;
+  min-height: auto; /* Ajusta según necesidad */
 }
 
 /* ================== Mario (posicionado relativo al contenedor) ================== */

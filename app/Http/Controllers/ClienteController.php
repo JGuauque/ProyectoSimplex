@@ -32,7 +32,17 @@ class ClienteController extends Controller
     public function store(Request $request)
     {
         //
-        
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'identificacion' => 'required|string|unique:clientes,identificacion',
+            'email' => 'nullable|email',
+            'telefono' => 'nullable|string|max:20'
+        ]);
+
+        Cliente::create($request->all());
+
+        return redirect()->route('cliente.index')
+            ->with('success', 'Cliente registrado exitosamente!');
     }
 
     /**
@@ -58,9 +68,61 @@ class ClienteController extends Controller
     public function update(Request $request, Cliente $cliente)
     {
         //
-        
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'identificacion' => 'required|string|unique:clientes,identificacion,' . $cliente->id,
+            'email' => 'nullable|email',
+            'telefono' => 'nullable|string|max:20'
+        ]);
+
+        $cliente->update($request->all());
+
+        return redirect()->route('cliente.index')
+            ->with('success', 'Cliente actualizado exitosamente!');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Cliente $cliente)
+    {
+        //
+        $cliente->delete();
+
+        return redirect()->route('cliente.index')
+            ->with('success', 'Cliente eliminado exitosamente!');
     }
 
 
-    
+    public function getVentas(Cliente $cliente)
+    {
+        $ventas = $cliente->ventas()->with('cliente')->orderBy('created_at', 'desc')->get();
+
+        return response()->json($ventas);
+    }
+
+    public function buscar(Request $request)
+    {
+        // ******** Version antigua *************
+        // $query = $request->get('q');
+
+        // $clientes = Cliente::where('identificacion', 'like', "%{$query}%")
+        //     ->orWhere('nombre', 'like', "%{$query}%")
+        //     ->limit(10)
+        //     ->get(['id', 'identificacion', 'nombre', 'telefono']);
+
+        // return response()->json($clientes);
+
+        $query = $request->get('q');
+
+        $clientes = Cliente::when($query, function ($q) use ($query) {
+            return $q->where('identificacion', 'like', "%{$query}%")
+                ->orWhere('nombre', 'like', "%{$query}%");
+        })
+            ->limit(20) // Aumentamos el límite para mostrar más resultados
+            ->orderBy('nombre') // Ordenar por nombre para mejor visualización
+            ->get(['id', 'identificacion', 'nombre', 'telefono']);
+
+        return response()->json($clientes);
+    }
 }
