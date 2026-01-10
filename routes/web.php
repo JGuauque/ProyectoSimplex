@@ -2,32 +2,54 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
-use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VentaController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ClienteController;
-use App\Http\Controllers\VentaController;
+use App\Http\Controllers\TurnoController;
+use App\Http\Controllers\LocalAliadoController;
+use App\Http\Middleware\VerificarTurnoActivo;
+use App\Http\Controllers\Auth\LoginController;
+
+use App\Http\Controllers\PdfController;
+
+use App\Http\Controllers\EmailController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Hash;
 
+use Illuminate\Support\Facades\Route;
+
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth', 'verified')->group(function () {
+
+    // Route::get('/dashboard', function () {
+    //     // Verificar permiso
+    //     if (!auth()->user()->can('ver dashboard')) {
+    //         // Redirigir a una página permitida (como ventas)
+    //         return redirect()->route('ventas.create')->with('error', 'No tienes permiso para ver el dashboard.');
+    //     }
+    //     return view('dashboard');
+    // })->name('dashboard');
+
+    // NUEVO: Usa el DashboardController
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/ventas-categoria', [DashboardController::class, 'getVentasPorCategoria'])
+        ->name('dashboard.ventas-categoria');
+
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    // RUTAS PARA EL MODULO USUARIOS 
 
     Route::resource('usuarios', UserController::class);
 
@@ -88,43 +110,137 @@ Route::middleware('auth')->group(function () {
     Route::resource('inventario', ProductoController::class);
     Route::get('/inventario/{id}/get-data', [ProductoController::class, 'getProductoData'])->name('inventario.get-data');
 
+
+
+    // routes/web.php
+    Route::middleware([VerificarTurnoActivo::class])->group(function () {
+        // ... otras rutas que requieran turno activo
+
+        Route::get('/ventas/create', [VentaController::class, 'create'])->name('ventas.create');
+        Route::post('/ventas', [VentaController::class, 'store'])->name('ventas.store');
+        Route::get('/buscar-productos', function (Request $request) {
+
+            $query = $request->get('q');
+
+            $productos = \App\Models\Producto::when($query, function ($q) use ($query) {
+                return $q->where('nombre', 'like', "%{$query}%")
+                    ->orWhere('codigo', 'like', "%{$query}%");
+            })
+                ->where('stock', '>', 0) // Solo productos con stock disponible
+                ->limit(20)
+                ->orderBy('nombre')
+                ->get(['id', 'nombre', 'codigo', 'precio', 'stock']);
+
+            return response()->json($productos);
+
+            // $query = $request->get('q');
+
+            // $productos = \App\Models\Producto::where('nombre', 'LIKE', "%{$query}%")
+            //     ->orWhere('codigo', 'LIKE', "%{$query}%")
+            //     ->where('stock', '>', 0)
+            //     ->select('id', 'nombre', 'codigo', 'precio', 'stock')
+            //     ->limit(10)
+            //     ->get();
+
+            // return response()->json($productos);
+        });
+    });
+
+
+
+
+
+    // Verifica que tengas estas rutas
+    Route::prefix('factura')->group(function () {
+        Route::get('/pdf/80mm/{venta}', [PdfController::class, 'factura80mm'])
+            ->name('factura.pdf.80mm')
+            ->whereNumber('venta');
+
+        Route::get('/pdf/a4/{venta}', [PdfController::class, 'facturaA4'])
+            ->name('factura.pdf.a4')
+            ->whereNumber('venta');
+    });
+
+
+
+    // Rutas para envío de comprobantes
+    Route::post('/venta/{venta}/enviar-email', [EmailController::class, 'enviarComprobanteEmail'])
+        ->name('venta.enviar.email')
+        ->where('venta', '[0-9]+'); // Solo números;
+
+
+    // En routes/web.php
+    Route::get('/test-email/{venta_id}', function ($venta_id) {
+        $venta = App\Models\Venta::find($venta_id);
+
+        if (!$venta) {
+            return "Venta no encontrada";
+        }
+
+        try {
+            Mail::to('test@example.com')->send(new App\Mail\ComprobanteVentaMail($venta, 'test@example.com'));
+            return "Email enviado exitosamente!";
+        } catch (\Exception $e) {
+            return "Error: " . $e->getMessage();
+        }
+    });
+
+
+
+
+
+
+
     Route::resource('clientes', ClienteController::class);
     Route::get('/clientes', [ClienteController::class, 'index'])->name('cliente.index');
     Route::get('/clientes/{cliente}/ventas', [ClienteController::class, 'getVentas'])->name('clientes.ventas');
     Route::get('/buscar-clientes', [ClienteController::class, 'buscar'])->name('clientes.buscar');
 
-    Route::get('/ventas/create', [VentaController::class, 'create'])->name('ventas.create');
-    Route::post('/ventas', [VentaController::class, 'store'])->name('ventas.store');
-    Route::get('/buscar-productos', function (Request $request) {
+    
+});
 
-        $query = $request->get('q');
-
-        $productos = \App\Models\Producto::when($query, function ($q) use ($query) {
-            return $q->where('nombre', 'like', "%{$query}%")
-                ->orWhere('codigo', 'like', "%{$query}%");
-        })
-            ->where('stock', '>', 0) // Solo productos con stock disponible
-            ->limit(20)
-            ->orderBy('nombre')
-            ->get(['id', 'nombre', 'codigo', 'precio', 'stock']);
-
+// ========== RUTAS API (Para AJAX/JavaScript) ==========
+Route::prefix('api')->group(function () {
+    // Obtener préstamos para la lista (AJAX)
+    Route::get('/prestamos', function () {
+        $prestamos = \App\Models\Prestamo::with(['local', 'producto'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+        return response()->json($prestamos);
+    });
+    // Obtener productos con stock
+    Route::get('/productos-con-stock', function () {
+        $productos = \App\Models\Producto::where('stock', '>', 0)
+            ->select('id', 'nombre', 'stock', 'precio', 'costo')
+            ->get();
         return response()->json($productos);
-
-        // $query = $request->get('q');
-
-        // $productos = \App\Models\Producto::where('nombre', 'LIKE', "%{$query}%")
-        //     ->orWhere('codigo', 'LIKE', "%{$query}%")
-        //     ->where('stock', '>', 0)
-        //     ->select('id', 'nombre', 'codigo', 'precio', 'stock')
-        //     ->limit(10)
-        //     ->get();
-
-        // return response()->json($productos);
+    });
+    // Obtener locales aliados
+    Route::get('/locales-aliados', function () {
+        $locales = \App\Models\LocalAliado::where('activo', true)
+            ->select('id', 'nombre', 'identificacion', 'contacto', 'direccion')
+            ->get();
+        return response()->json($locales);
     });
 
 
+    
+    Route::get('/api/productos-con-stock', function () {
+        $productos = \App\Models\Producto::where('stock', '>', 0)->get();
+        return response()->json($productos);
+    });
 
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    // routes/web.php
+
+    Route::prefix('turnos')->group(function () {
+        Route::get('/', [TurnoController::class, 'index'])->name('turno.index');
+        Route::post('/abrir', [TurnoController::class, 'abrir'])->name('turnos.abrir');
+        Route::post('/cerrar', [TurnoController::class, 'cerrar'])->name('turnos.cerrar');
+        Route::get('/historial', [TurnoController::class, 'historial'])->name('turnos.historial');
+        // routes/web.php
+        Route::get('/estado', [TurnoController::class, 'estado'])->name('turnos.estado');
+    });
+
 });
 
 require __DIR__ . '/auth.php';

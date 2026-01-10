@@ -367,6 +367,426 @@
     </div>
 
 
-    
+    <!-- Modal ventas cliente -->
+    <div id="modalVentas" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong>
+                    <h2 style="font-size: 20px;">Historial de Ventas - <span id="clienteModalNombre"></span></h2>
+                </strong>
+                <!-- <h3>Historial de Ventas - <span id="clienteModalNombre"></span></h3> -->
+                <button type="button" class="close-modal" onclick="cerrarModalVentas()">&times;</button>
+            </div>
+
+            <!-- BUSCADOR AVANZADO -->
+            <div class="buscador-ventas" style="margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                <div class="filtros-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; align-items: end;">
+                    <!-- Filtro por N° Factura -->
+                    <div class="filtro-item">
+                        <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #555;">N° Factura</label>
+                        <input type="text" id="filtroFactura" placeholder="CDN-2025-001"
+                            style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px;">
+                    </div>
+
+                    <!-- Filtro por Fecha -->
+                    <div class="filtro-item">
+                        <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #555;">Fecha</label>
+                        <input type="date" id="filtroFecha"
+                            style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px;">
+                    </div>
+
+                    <!-- Filtro por Precio (Rango) -->
+                    <div class="filtro-item">
+                        <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #555;">Precio Min.</label>
+                        <input type="number" id="filtroPrecioMin" placeholder="Mínimo" step="0.01"
+                            style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px;">
+                    </div>
+
+                    <div class="filtro-item">
+                        <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #555;">Precio Max.</label>
+                        <input type="number" id="filtroPrecioMax" placeholder="Máximo" step="0.01"
+                            style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px;">
+                    </div>
+
+                    <!-- Botones de acción -->
+                    <div class="filtro-item" style="grid-column: span 4; display: flex; gap: 10px; justify-content: center; margin-top: 10px;">
+                        <button onclick="aplicarFiltros()" class="btn btn-azul" style="padding: 10px 20px;">
+                            <i class="fa-solid fa-search"></i> Buscar
+                        </button>
+                        <button onclick="resetearFiltros()" class="btn btn-rojo" style="padding: 10px 20px;">
+                            <i class="fa-solid fa-rotate-left"></i> Resetear
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONTADOR DE RESULTADOS -->
+            <div id="contadorResultados" style="margin-bottom: 10px; padding: 10px; background: #e3f2fd; border-radius: 5px; display: none;">
+                <strong>Resultados encontrados: <span id="totalResultados">0</span></strong>
+            </div>
+
+            <!-- TABLA DE VENTAS -->
+            <div class="tabla-container">
+                <table class="tabla-ventas">
+                    <thead>
+                        <tr>
+                            <th>N° Factura</th>
+                            <th>Fecha</th>
+                            <th>Monto</th>
+                            <th>Método de Pago</th>
+                            <th>Acciónes</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaVentasCliente">
+                        <!-- Las ventas se cargarán aquí dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- PAGINACIÓN -->
+            <div id="paginacionVentas" style="display: none; margin-top: 20px; text-align: center;">
+                <button id="btnAnterior" onclick="cambiarPagina(-1)" class="btn btn-azul" disabled>
+                    <i class="fa-solid fa-chevron-left"></i> Anterior
+                </button>
+                <span id="infoPagina" style="margin: 0 15px; font-weight: bold;"></span>
+                <button id="btnSiguiente" onclick="cambiarPagina(1)" class="btn btn-azul" disabled>
+                    Siguiente <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+
+            <div style="text-align: center; margin-top: 20px;">
+                <button onclick="cerrarModalVentas()" class="btn btn-rojo">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // ===== VARIABLES GLOBALES =====
+    let ventasClienteActual = [];
+    let clienteIdActual = null;
+    let paginaActual = 1;
+    const ventasPorPagina = 10;
+
+    // ===== FUNCIONES DE FILTRADO =====
+
+    // Función para aplicar filtros
+    function aplicarFiltros() {
+        const filtroFactura = document.getElementById('filtroFactura')?.value.trim().toLowerCase() || '';
+        const filtroFecha = document.getElementById('filtroFecha')?.value || '';
+        const filtroPrecioMin = parseFloat(document.getElementById('filtroPrecioMin')?.value) || 0;
+        const filtroPrecioMax = parseFloat(document.getElementById('filtroPrecioMax')?.value) || Infinity;
+
+        // Si no hay ventas cargadas, salir
+        if (!ventasClienteActual || ventasClienteActual.length === 0) {
+            const tbody = document.getElementById('tablaVentasCliente');
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">No hay ventas para filtrar</td></tr>';
+            return;
+        }
+
+        // Filtrar ventas
+        let ventasFiltradas = ventasClienteActual.filter(venta => {
+            // Filtro por número de factura
+            if (filtroFactura && !venta.numero_factura.toLowerCase().includes(filtroFactura)) {
+                return false;
+            }
+
+            // // Filtro por fecha
+            // if (filtroFecha) {
+            //     const fechaVenta = new Date(venta.created_at).toISOString().split('T')[0];
+            //     if (fechaVenta !== filtroFecha) {
+            //         return false;
+            //     }
+            // }
+
+            // POR ESTO:
+            if (filtroFecha) {
+                // Obtener fecha en formato YYYY-MM-DD en zona horaria local
+                const fecha = new Date(venta.created_at);
+                const fechaLocal = fecha.getFullYear() + '-' +
+                    String(fecha.getMonth() + 1).padStart(2, '0') + '-' +
+                    String(fecha.getDate()).padStart(2, '0');
+
+                if (fechaLocal !== filtroFecha) {
+                    return false;
+                }
+            }
+
+
+            // Filtro por rango de precio
+            const totalVenta = parseFloat(venta.total);
+            if (totalVenta < filtroPrecioMin || totalVenta > filtroPrecioMax) {
+                return false;
+            }
+
+            return true;
+        });
+
+        // Actualizar tabla con ventas filtradas
+        actualizarTablaVentas(ventasFiltradas);
+
+        // Mostrar contador de resultados si existe el elemento
+        const contadorResultados = document.getElementById('contadorResultados');
+        const totalResultados = document.getElementById('totalResultados');
+
+        if (contadorResultados && totalResultados) {
+            totalResultados.textContent = ventasFiltradas.length;
+            contadorResultados.style.display = 'block';
+        }
+
+        // Configurar paginación
+        configurarPaginacion(ventasFiltradas);
+    }
+
+    // Función para resetear filtros
+    function resetearFiltros() {
+        // Limpiar campos de filtro
+        const filtroFactura = document.getElementById('filtroFactura');
+        const filtroFecha = document.getElementById('filtroFecha');
+        const filtroPrecioMin = document.getElementById('filtroPrecioMin');
+        const filtroPrecioMax = document.getElementById('filtroPrecioMax');
+
+        if (filtroFactura) filtroFactura.value = '';
+        if (filtroFecha) filtroFecha.value = '';
+        if (filtroPrecioMin) filtroPrecioMin.value = '';
+        if (filtroPrecioMax) filtroPrecioMax.value = '';
+
+        // Ocultar contador de resultados
+        const contadorResultados = document.getElementById('contadorResultados');
+        if (contadorResultados) {
+            contadorResultados.style.display = 'none';
+        }
+
+        // Si hay ventas cargadas, mostrar todas
+        if (ventasClienteActual && ventasClienteActual.length > 0) {
+            aplicarFiltros();
+        }
+    }
+
+    // ===== FUNCIONES EXISTENTES =====
+
+    async function editarCliente(clienteId) {
+        try {
+            const response = await fetch(`/clientes/${clienteId}/edit`);
+            const cliente = await response.json();
+
+            // Llenar el formulario con los datos del cliente
+            document.getElementById('edit_nombre').value = cliente.nombre;
+            document.getElementById('edit_identificacion').value = cliente.identificacion;
+            document.getElementById('edit_email').value = cliente.email || '';
+            document.getElementById('edit_telefono').value = cliente.telefono || '';
+
+            // Actualizar el action del formulario
+            const form = document.getElementById('formEditarCliente');
+            form.action = `/clientes/${clienteId}`;
+
+            // Mostrar el modal
+            document.getElementById('modalEditarCliente').style.display = 'block';
+
+        } catch (error) {
+            console.error('Error al cargar cliente:', error);
+            alert('Error al cargar los datos del cliente');
+        }
+    }
+
+    // Función para cerrar el modal de edición
+    function cerrarModalEditar() {
+        document.getElementById('modalEditarCliente').style.display = 'none';
+        // Limpiar el formulario al cerrar
+        document.getElementById('formEditarCliente').reset();
+    }
+
+    // Función para ver ventas del cliente
+    async function verVentas(clienteId, clienteNombre) {
+        try {
+            clienteIdActual = clienteId;
+            paginaActual = 1;
+
+            document.getElementById('clienteModalNombre').textContent = clienteNombre;
+            document.getElementById('modalVentas').style.display = 'block';
+
+            // Mostrar loading
+            const tbody = document.getElementById('tablaVentasCliente');
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Cargando ventas...</td></tr>';
+
+            // Resetear filtros
+            resetearFiltros();
+
+            // Cargar todas las ventas del cliente
+            const response = await fetch(`/clientes/${clienteId}/ventas`);
+            ventasClienteActual = await response.json();
+
+            // Mostrar todas las ventas inicialmente
+            aplicarFiltros();
+
+        } catch (error) {
+            console.error('Error al cargar ventas:', error);
+            const tbody = document.getElementById('tablaVentasCliente');
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: red;">Error al cargar las ventas</td></tr>';
+        }
+    }
+
+    // Función para configurar paginación
+    function configurarPaginacion(ventasFiltradas) {
+        const totalPaginas = Math.ceil(ventasFiltradas.length / ventasPorPagina);
+        const paginacionDiv = document.getElementById('paginacionVentas');
+        const btnAnterior = document.getElementById('btnAnterior');
+        const btnSiguiente = document.getElementById('btnSiguiente');
+        const infoPagina = document.getElementById('infoPagina');
+
+        if (totalPaginas > 1) {
+            paginacionDiv.style.display = 'block';
+            btnAnterior.disabled = paginaActual === 1;
+            btnSiguiente.disabled = paginaActual === totalPaginas;
+            infoPagina.textContent = `Página ${paginaActual} de ${totalPaginas}`;
+        } else {
+            paginacionDiv.style.display = 'none';
+        }
+
+        // Mostrar ventas de la página actual
+        const inicio = (paginaActual - 1) * ventasPorPagina;
+        const fin = inicio + ventasPorPagina;
+        const ventasPagina = ventasFiltradas.slice(inicio, fin);
+
+        actualizarTablaVentas(ventasPagina);
+    }
+
+    // Función para cambiar de página
+    function cambiarPagina(direccion) {
+        const totalVentas = ventasClienteActual.length;
+        const totalPaginas = Math.ceil(totalVentas / ventasPorPagina);
+
+        paginaActual += direccion;
+
+        if (paginaActual < 1) paginaActual = 1;
+        if (paginaActual > totalPaginas) paginaActual = totalPaginas;
+
+        aplicarFiltros();
+    }
+
+    // Función para actualizar la tabla de ventas
+    function actualizarTablaVentas(ventas) {
+        const tbody = document.getElementById('tablaVentasCliente');
+
+        if (ventas.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 40px;">No se encontraron ventas con los filtros aplicados</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = ventas.map(venta => `
+        <tr>
+            <td><strong>${venta.numero_factura}</strong></td>
+            <td>${new Date(venta.created_at).toLocaleDateString()}</td>
+            <td><span style="font-weight: bold; color: #2d3748;">$${parseFloat(venta.total).toFixed(2)}</span></td>
+            <td>
+                <span class="badge ${venta.metodo_pago === 'Efectivo' ? 'badge-success' : 'badge-info'}" 
+                      style="background: ${venta.metodo_pago === 'Efectivo' ? '#48bb78' : '#4299e1'}; 
+                             color: white; padding: 4px 12px; border-radius: 12px; font-size: 12px;">
+                    ${venta.metodo_pago}
+                </span>
+            </td>
+            <td>
+                <button class="btn btn-info btn-sm" onclick="verDetalleVenta(${venta.id})" 
+                        style="background: #4299e1; color: white; padding: 6px 12px; border-radius: 4px; border: none; cursor: pointer;"
+                        title="Ver factura en formato A4">
+                    <i class="fa-solid fa-eye"></i> Ver Detalle
+                </button>
+            </td>
+        </tr>
+    `).join('');
+    }
+
+    // Función para ver detalle de venta con manejo de errores
+    function verDetalleVenta(ventaId) {
+        if (!ventaId || ventaId <= 0) {
+            alert('Error: ID de venta no válido');
+            return;
+        }
+
+        try {
+            // Mostrar indicador de carga (opcional)
+            const btn = event.target;
+            const originalHtml = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Cargando...';
+            btn.disabled = true;
+
+            // Abrir PDF A4 en nueva pestaña
+            const url = `/factura/pdf/a4/${ventaId}`;
+            const nuevaVentana = window.open(url, '_blank');
+
+            if (!nuevaVentana || nuevaVentana.closed || typeof nuevaVentana.closed === 'undefined') {
+                // Si el popup fue bloqueado, redirigir en la misma pestaña
+                alert('Permite las ventanas emergentes para ver la factura o haz clic en el enlace.');
+                window.location.href = url;
+            }
+
+            // Restaurar botón después de 2 segundos
+            setTimeout(() => {
+                btn.innerHTML = originalHtml;
+                btn.disabled = false;
+            }, 2000);
+
+        } catch (error) {
+            console.error('Error al abrir la factura:', error);
+            alert('Error al abrir la factura. Por favor, intenta nuevamente.');
+
+            // Restaurar botón en caso de error
+            const btn = event.target;
+            btn.innerHTML = '<i class="fa-solid fa-file-pdf"></i> Ver Factura';
+            btn.disabled = false;
+        }
+    }
+
+    // Función para ver detalle de venta
+    // function verDetalleVenta(ventaId) {
+    //     // alert(`Detalle de venta ${ventaId} - Esta funcionalidad se puede expandir para mostrar productos, etc.`);
+    //     // Abrir PDF A4 en nueva pestaña
+    //     window.open(`/factura/pdf/a4/${ventaId}`, '_blank');
+
+    //     // O si prefieres mantener un registro en consola:
+    //     console.log(`Abriendo factura A4 para venta ID: ${ventaId}`);
+    // }
+
+    // Función para cerrar el modal de ventas
+    function cerrarModalVentas() {
+        document.getElementById('modalVentas').style.display = 'none';
+        // Limpiar la tabla al cerrar
+        document.getElementById('tablaVentasCliente').innerHTML = '';
+        // Resetear variables
+        ventasClienteActual = [];
+        clienteIdActual = null;
+        paginaActual = 1;
+    }
+
+    // Permitir buscar con Enter
+    document.addEventListener('DOMContentLoaded', function() {
+        const inputsFiltro = ['filtroFactura', 'filtroFecha', 'filtroPrecioMin', 'filtroPrecioMax'];
+
+        inputsFiltro.forEach(id => {
+            const input = document.getElementById(id);
+            if (input) {
+                input.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        aplicarFiltros();
+                    }
+                });
+            }
+        });
+    });
+
+    // Cerrar modales al hacer click fuera
+    window.onclick = function(event) {
+        const modalEditar = document.getElementById('modalEditarCliente');
+        const modalVentas = document.getElementById('modalVentas');
+
+        if (event.target === modalEditar) {
+            modalEditar.style.display = 'none';
+        }
+        if (event.target === modalVentas) {
+            modalVentas.style.display = 'none';
+        }
+    }
+</script>
 
 @endsection

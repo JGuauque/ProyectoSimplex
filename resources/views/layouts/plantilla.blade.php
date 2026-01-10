@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
 
@@ -10,12 +11,15 @@
 
   <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
   <!-- <link rel="stylesheet" href="css/dashboard.css"> -->
-  <link rel="stylesheet" href="css/estilos-usuarios.css"><!-- estilos propios -->
+  <link rel="stylesheet" href="{{ asset('css/estilos-usuarios.css') }}"><!-- estilos propios -->
   <link rel="stylesheet" href="{{ asset('css/estilos-inventario.css') }}"><!-- estilos inventario -->
   <link rel="stylesheet" href="{{ asset('css/estilos-ventas.css') }}">
   <link rel="stylesheet" href="{{ asset('css/estilos-clientes.css') }}">
   <link rel="stylesheet" href="{{ asset('css/estilos-turnos.css') }}">
   <link rel="stylesheet" href="{{ asset('css/estilos-prestamos.css') }}">
+
+  <!-- NUEVO: Estilos para Alertas -->
+  <link rel="stylesheet" href="{{ asset('css/estilos-alertas.css') }}">
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
@@ -23,7 +27,9 @@
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 </head>
+
 <body>
+
   <!-- Sidebar -->
   <aside id="sidebar" class="sidebar">
     <div class="sidebar-header">
@@ -31,33 +37,33 @@
       <h2>La Casa del Nintendo</h2>
     </div>
     <nav class="sidebar-nav">
-      
+
       @can('ver dashboard')
-        <a href="{{ route('dashboard') }}" class="active"><i class="fa-solid fa-house"></i> Dashboard</a>
+      <a href="{{ route('dashboard') }}"><i class="fa-solid fa-house"></i> Dashboard</a>
       @endcan
-      
+
       @can('ver turnos')
-        <a href="#"><i class="fa-solid fa-clock"></i> Turno</a>
+      <a href="{{ route('turno.index') }}"><i class="fa-solid fa-clock"></i> Turno</a>
       @endcan
-      
+
       @can('ver usuarios')
-        <a href="{{ route('usuarios.index') }}"><i class="fa-solid fa-user-gear"></i> Usuarios</a>
+      <a href="{{ route('usuarios.index') }}"><i class="fa-solid fa-user-gear"></i> Usuarios</a>
       @endcan
-      
+
       @can('ver clientes')
-        <a href="{{ route('cliente.index') }}"><i class="fa-solid fa-users"></i> Clientes</a>
+      <a href="{{ route('cliente.index') }}"><i class="fa-solid fa-users"></i> Clientes</a>
       @endcan
-      
+
       @can('ver inventario')
-        <a href="{{ route('inventario.index') }}"><i class="fa-solid fa-boxes-stacked"></i> Inventario</a>
+      <a href="{{ route('inventario.index') }}"><i class="fa-solid fa-boxes-stacked"></i> Inventario</a>
       @endcan
-      
+
       @can('ver prestamos')
-        <a href="#"><i class="fa-solid fa-handshake"></i> Préstamos</a>
+      <a href="#"><i class="fa-solid fa-handshake"></i> Préstamos</a>
       @endcan
-      
+
       @can('ver ventas')
-        <a href="{{ route('ventas.create') }}"><i class="fa-solid fa-cash-register"></i> Ventas</a>
+      <a href="{{ route('ventas.create') }}"><i class="fa-solid fa-cash-register"></i> Ventas</a>
       @endcan
       
     </nav>
@@ -72,11 +78,10 @@
     <h1 id="headerTitle">@yield('titulo', 'Dashboard')</h1>
 
     <div class="user-info">
-      <a href="{{route('profile.edit')}}">👤</a>
-      <!-- <span id="usuarioActivo" href="{{route('profile.edit')}}" >👤}}</span> -->
+      <a href="{{route('profile.edit')}}" style="font-style: normal; font-weight: bold; font-size: medium;">Bienvenido, 👤 {{Auth::user()->name}}</a>
       <form method="POST" action="{{ route('logout') }}">
         @csrf
-      <button id="logoutBtn" type="submit" class="logout-btn">Salir</button>
+        <button id="logoutBtn" type="submit" class="logout-btn">Salir</button>
       </form>
     </div>
   </header>
@@ -84,10 +89,22 @@
   <!-- Main Content -->
   <main id="mainContent">
     <!-- AQUI SE COLOCA TODOS LOS ELEMENTOS CAMBIANTES -->
-      @yield('contenido')
+    @yield('contenido')
   </main>
 
   <script src="{{ asset('js/app.js') }}"></script>
-  <script src="{{ asset('js/dashboard.js') }}"></script>
+  <!-- NUEVO: Script para manejar alertas -->
+  <script src="{{ asset('js/alertas.js') }}"></script>
+  <!-- <script src="{{ asset('js/dashboard.js') }}"></script> -->
+  <!-- Script para pasar alertas de sesión PHP a JavaScript -->
+  <script>
+  // Variables globales con mensajes de sesión (opcional)
+  window.sessionAlerts = {
+    success: @json(session('success')),
+    error: @json(session('error')),
+    validationErrors: @json($errors->all())
+  };
+</script>
 </body>
+
 </html>
