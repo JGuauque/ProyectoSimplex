@@ -59,7 +59,7 @@
 </section> -->
 
 <!-- Historial -->
-<section class="historial" style="margin: 40px; margin-top: 0px; padding: 30px;">
+<section class="historial" style="margin: 70px; margin-top: 0px; padding: 30px;">
     <strong>
         <h2 style="font-size: 24px;">Historial de Turnos</h2>
     </strong>

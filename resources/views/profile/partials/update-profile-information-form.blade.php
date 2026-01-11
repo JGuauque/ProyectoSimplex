@@ -44,7 +44,7 @@
             @if($user->roles->count() > 0)
             <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
                 <h3 class="text-md font-medium text-gray-900 dark:text-gray-100 mb-2">
-                    {{ __('Roles asignados') }}
+                    {{ __('Rol asignado') }}
                 </h3>
                 <div class="flex flex-wrap gap-2">
                     @foreach($user->roles as $role)

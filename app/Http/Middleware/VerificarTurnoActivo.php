@@ -26,7 +26,7 @@ class VerificarTurnoActivo
 
         if (!$turnoActivo) {
             return redirect()->route('turno.index')
-                ->with('error', 'Debe abrir un turno antes de realizar operaciones en el sistema');
+                ->with('error', 'Debe abrir un turno antes de realizar una operación de venta en el sistema');
         }
 
         return $next($request);
