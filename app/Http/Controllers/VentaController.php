@@ -43,7 +43,7 @@ class VentaController extends Controller
 
         if (!$turnoActivo) {
             return redirect()->route('ventas.create')
-                ->with('error', 'Debe abrir un turno antes de realizar ventas')
+                ->with('error', 'ℹ️ Debe abrir un turno antes de realizar una operación de venta en el sistema.')
                 ->withInput();
         }
         // Validar los datos básicos

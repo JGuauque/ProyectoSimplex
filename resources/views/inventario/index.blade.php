@@ -15,7 +15,7 @@
         <!-- <h2>Registrar Producto</h2> -->
         <form method="POST" action="{{ route('inventario.store') }}" id="formInventario" enctype="multipart/form-data">
             @csrf
-            <div class="form-grid">
+            <div class="form-grid1">
                 <input type="text" id="nombreProducto" name="nombre" placeholder="Nombre del producto *" required value="{{ old('nombre') }}">
                 <input type="text" id="codigoProducto" placeholder="Código (auto)" readonly>
                 <input type="number" id="costo" name="costo" step="0.01" placeholder="Costo *" required value="{{ old('costo') }}">
@@ -102,17 +102,17 @@
 </div>
 
 <!-- Modal para Editar Producto -->
-<div id="modalEditar" class="modal hidden">
-    <div class="modal-content">
-        <div class="modal-header">
+<div id="modalEditar" class="modal1  hidden">
+    <div class="modal-content1">
+        <div class="modal-header1">
             <h2>Editar Producto</h2>
             <button class="close-modal" onclick="cerrarModalEditar()">&times;</button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body1">
             <form method="POST" id="formEditarProducto" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
-                <div class="form-grid">
+                <div class="form-grid1">
                     <input type="text" id="edit_nombre" name="nombre" placeholder="Nombre del producto" required>
                     <input type="text" id="edit_codigo" placeholder="Código" readonly>
                     <input type="number" id="edit_costo" name="costo" step="0.01" placeholder="Costo" required>
@@ -127,7 +127,7 @@
                     </select>
                     <label class="destacado-check">
                         <input id="edit_destacado" name="destacado" type="checkbox" value="1">
-                        <span></span>
+                        <span>Destacado</span>
                     </label>
                     <input id="edit_imagen" name="imagen" type="file" accept="image/*">
                     <button type="submit" class="btn btn-azul">Actualizar</button>
