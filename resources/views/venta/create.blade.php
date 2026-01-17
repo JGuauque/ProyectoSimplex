@@ -477,7 +477,7 @@ $proximoNumero = Venta::obtenerProximoNumero();
             </div>
 
             <div style="display: flex; justify-content: center; gap: 15px; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
-                <a href="#" class="btn" style="padding: 10px 20px; background: #6c757d; color: white; text-decoration: none; border-radius: 5px;">
+                <a href="{{ route('cliente.index') }}" class="btn" style="padding: 10px 20px; background: #6c757d; color: white; text-decoration: none; border-radius: 5px;">
                     <i class="fa-solid fa-list"></i> Ir al listado
                 </a>
                 <a href="{{ route('ventas.create') }}" class="btn" style="padding: 10px 20px; background: #667eea; color: white; text-decoration: none; border-radius: 5px;">

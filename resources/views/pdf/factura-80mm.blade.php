@@ -223,16 +223,17 @@
 
     <!-- Logo del negocio -->
     <div class="logo">
-        <div class="negocio-nombre">{{ $configuracion['nombre'] ?? 'Mi Negocio' }}</div>
+        <div class="negocio-nombre">{{ $configuracion['nombre'] ?? 'LOGO' }}</div>
     </div>
 
     <!-- Información del negocio -->
     <div class="header">
-        <div class="negocio-nombre">{{ $configuracion['nombre'] ?? 'Mi Negocio' }}</div>
-        <div class="negocio-info">{{ $configuracion['direccion'] ?? 'Dirección no configurada' }}</div>
-        <div class="negocio-info">Tel: {{ $configuracion['telefono'] ?? 'N/A' }}</div>
+        <div class="negocio-nombre">{{  'La Casa de Nintendo' }}</div>
+        <div class="negocio-info">{{ 'Cra 27 #30 - 76, Palmira' }}</div>
+        <div class="negocio-info">Tel: {{ '+57 317 7264000' }}</div>
+        <!-- CONFIGURAR CORREO -->
         <div class="negocio-info">Email: {{ $configuracion['email'] ?? 'N/A' }}</div>
-        <div class="ruc">RUC: {{ $configuracion['ruc'] ?? 'N/A' }}</div>
+        <div class="ruc">NIT : {{ '43644402-8' }}</div>
     </div>
 
     <!-- Tipo de comprobante -->
@@ -341,8 +342,10 @@
 
         <div class="mensaje-legal">
             <div>--------------------------------</div>
-            <div>Comprobante autorizado por la SUNAT</div>
+            <!-- CONFIGURAR AUTORIZADO POR... -->
+            <div>Comprobante autorizado por ...</div>
             <div>Representación impresa del comprobante electrónico</div>
+            <!-- CONFIGURAR LINK -->
             <div>Consulte en: www.minegocio.com/consultas</div>
             <div>Fecha de impresión: {{ $fecha_impresion ?? now()->format('d/m/Y H:i:s') }}</div>
             <div>--------------------------------</div>

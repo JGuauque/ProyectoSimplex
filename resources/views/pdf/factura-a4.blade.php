@@ -386,7 +386,7 @@
     // Información de configuración
     $config = [
     'nombre' => 'LA CASA DEL NINTENDO',
-    'ruc' => '1234567890123',
+    'nit' => '1234567890123',
     'direccion' => 'Av. Principal #123, Ciudad',
     'telefono' => '+123 456 7890',
     'email' => 'ventas@lacasadelnintendo.com',
@@ -426,11 +426,13 @@
 
                 <div class="empresa-texto">
                     <div class="empresa-nombre">{{ getConfig('nombre') }}</div>
-                    <div class="empresa-documento">RUC: {{ getConfig('ruc') }}</div>
+                    <div class="empresa-documento">NIT: {{ '43644402-8' }}</div>
                     <div class="empresa-detalle">
-                        <p>{{ getConfig('direccion') }}</p>
-                        <p>Tel: {{ getConfig('telefono') }}</p>
-                        <p>Email: {{ getConfig('email') }}</p>
+                        <p>{{ 'Cra 27 #30 - 76, Palmira - Valle del Cauca' }}</p>
+                        <p>Tel: {{ '+57 317 7264000' }}</p>
+                        <!-- CONFIGURAR CORREO -->
+                        <p>Email: {{ 'correoejemplo@gmail.com' }}</p>
+                        <!-- CONFIGURAR PAGINA WEB -->
                         <p>Web: {{ getConfig('web') }}</p>
                     </div>
                 </div>
@@ -470,10 +472,10 @@
                     <span class="info-label">Vendedor:</span>
                     <span class="info-value">{{ $venta->turno->user->name ?? ($venta->turno->usuario->name ?? 'N/A') }}</span>
                 </div>
-                <div class="info-row">
+                <!-- <div class="info-row">
                     <span class="info-label">Turno:</span>
-                    <span class="info-value">{{ $venta->turno->codigo_turno ?? 'N/A' }}</span>
-                </div>
+                    <span class="info-value">{{ $venta->turno->turno->id_turno ?? 'N/A' }}</span>
+                </div> -->
             </div>
 
             <!-- Columna 2: Datos del cliente -->
@@ -495,10 +497,10 @@
                     <span class="info-label">Email:</span>
                     <span class="info-value">{{ $venta->cliente->email ?? 'N/A' }}</span>
                 </div>
-                <div class="info-row">
+                <!-- <div class="info-row">
                     <span class="info-label">Dirección:</span>
                     <span class="info-value">{{ $venta->cliente->direccion ?? 'N/A' }}</span>
-                </div>
+                </div> -->
             </div>
         </div>
 
@@ -606,7 +608,7 @@
                 <div class="firma-line"></div>
                 <div class="firma-text">
                     FIRMA AUTORIZADA<br>
-                    {{ getConfig('nombre') }}
+                    <!-- {{ getConfig('nombre') }} -->
                 </div>
             </div>
 
@@ -614,6 +616,7 @@
             <div class="mensaje-legal">
                 <p><strong>INFORMACIÓN LEGAL:</strong> Este documento es una representación impresa de un comprobante electrónico.</p>
                 <p>• Conserve este comprobante para cualquier consulta o reclamo.</p>
+                <!-- CONFIGURA PAGINA WEB -->
                 <p>• Consulta: {{ getConfig('web_consulta', 'www.lacasadelnintendo.com/consultas') }} | Fecha impresión: {{ $fecha_impresion ?? now()->format('d/m/Y H:i:s') }}</p>
                 <p>• Código seguridad: {{ strtoupper(substr(md5($venta->id . ($venta->numero_factura ?? '')), 0, 10)) }}</p>
             </div>

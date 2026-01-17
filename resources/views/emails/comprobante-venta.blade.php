@@ -76,27 +76,29 @@
             <p><strong>Método de Pago:</strong> {{ $venta->metodo_pago }}</p>
         </div>
         
-        <p>El comprobante en formato PDF está adjunto a este correo. También puedes descargarlo haciendo clic en el siguiente enlace:</p>
+        <p>El comprobante en formato PDF está adjunto a este correo.</p>
         
-        <p style="text-align: center;">
+        <!-- <p style="text-align: center;">
             <a href="{{ route('factura.pdf.a4', $venta->id) }}" class="btn-ver" target="_blank">
                 Ver Comprobante en Línea
             </a>
-        </p>
+        </p> -->
         
         <p><strong>Información importante:</strong></p>
         <ul>
             <li>Conserva este comprobante para cualquier consulta o reclamo</li>
             <li>Presenta este comprobante en caso de requerir garantía</li>
+            <!-- CONFIGURAR CORREO -->
             <li>Para consultas, contáctanos al {{ config('mail.from.address') }}</li>
         </ul>
         
         <p>¡Gracias por tu compra!</p>
         
         <div class="footer">
-            <p>Este es un correo automático, por favor no responder a esta dirección.</p>
+            <p>Este es un correo automático, por favor no responder a esta dirección de correo.</p>
+            <!-- CONFIGURAR SIMPLEX O LCN -->
             <p>&copy; {{ date('Y') }} LA CASA DEL NINTENDO. Todos los derechos reservados.</p>
-            <p>Dirección: Av. Principal #123, Ciudad | Teléfono: +123 456 7890</p>
+            <p>Dirección: Cra 27 #30 - 76, Ciudad Palmira, Valle del Cauca | Teléfono: +57 317 7264000</p>
         </div>
     </div>
 </body>
