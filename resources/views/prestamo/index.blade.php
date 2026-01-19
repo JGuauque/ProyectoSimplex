@@ -101,40 +101,40 @@
 </div> -->
 
 <!-- Modal Nuevo Local -->
-<div id="modalLocal" class="modal hidden">
-    <div class="modal-card">
-        <div class="modal-header">
-            <h3 id="modalLocalTitle" class="modal-title">Nuevo Local</h3>
+<div id="modalLocal" class="modal-prestamo hidden">
+    <div class="modal-card-prestamo">
+        <div class="modal-header-prestamo">
+            <h3 id="modalLocalTitle" class="modal-title-prestamo">Nuevo Local</h3>
             <!-- <button id="closeModalLocal" class="modal-close">&times;</button> -->
         </div>
 
-        <form id="formLocal" class="modal-form">
-            <div class="form-row">
+        <form id="formLocal" class="modal-form-prestamo">
+            <div class="form-row-prestamo">
 
-                <div class="form-group">
+                <div class="form-group-prestamo">
                     <label for="localNombre">Nombre del local <span class="required">*</span></label>
                     <input id="localNombre" type="text" placeholder="Ingrese el nombre del local" required>
                     
                 </div>
 
-                <div class="form-group">
+                <div class="form-group-prestamo">
                     <label for="localId">ID / NIT</label>
                     <input id="localId" type="text" placeholder="Ej: 123456789-0">
                     
                 </div>
 
-                <div class="form-group">
+                <div class="form-group-prestamo">
                     <label for="localContacto">Contacto</label>
                     <input id="localContacto" type="text" placeholder="Teléfono o email">
                 </div>
 
-                <div class="form-group">
+                <div class="form-group-prestamo">
                     <label for="localDireccion">Dirección</label>
-                    <input id="localDireccion" type="text" placeholder="Dirección completa">
+                    <input id="localDireccion" type="text" placeholder="Dirección">
                 </div>
             </div>
 
-            <div class="modal-actions">
+            <div class="modal-actions-prestamo">
                 <button type="submit" class="btn btn-azul">Guardar</button>
                 <button type="button"
                         id="closeModalLocal"
@@ -826,5 +826,7 @@
 </script>
 
 <script src="{{ asset('js\prestamo\estados-prestamo.js') }}"></script>
+<script src="{{ asset('js\prestamo\reporte-prestamo.js') }}"></script>
+
 
 @endsection

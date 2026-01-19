@@ -162,6 +162,9 @@ Route::middleware('auth', 'verified')->group(function () {
             ->whereNumber('venta');
     });
 
+    Route::get('/prestamos/exportar-pdf', [PdfController::class, 'exportarPDF'])
+        ->name('prestamos.exportar.pdf');
+
 
 
     // Rutas para envío de comprobantes
@@ -258,7 +261,6 @@ Route::prefix('api')->group(function () {
         // routes/web.php
         Route::get('/estado', [TurnoController::class, 'estado'])->name('turnos.estado');
     });
-
 });
 
 require __DIR__ . '/auth.php';

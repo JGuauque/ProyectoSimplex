@@ -8,6 +8,11 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 
+use App\Models\Prestamo;
+use App\Models\LocalAliado;
+use App\Models\Producto;
+use Carbon\Carbon;
+
 class PdfController extends Controller
 {
 
@@ -126,5 +131,55 @@ class PdfController extends Controller
                 'message' => 'Error al generar la factura: ' . $e->getMessage()
             ], 500);
         }
+    }
+
+    public function exportarPDF(Request $request)
+    {
+        // Obtener todos los préstamos con relaciones
+        $prestamos = Prestamo::with(['local', 'producto'])
+            ->orderBy('fecha_prestamo', 'desc')
+            ->get();
+
+        // Formatear los datos para el PDF
+        $prestamosFormateados = $prestamos->map(function ($prestamo) {
+            return [
+                'id' => $prestamo->id,
+                'producto' => $prestamo->producto->nombre ?? 'No disponible',
+                'local' => $prestamo->local->nombre ?? 'No disponible',
+                'cantidad' => $prestamo->cantidad,
+                'precio_unitario' => number_format($prestamo->precio_unitario, 2, ',', '.'),
+                'subtotal' => number_format($prestamo->subtotal, 2, ',', '.'),
+                'fecha_prestamo' => Carbon::parse($prestamo->fecha_prestamo)->format('d/m/Y'),
+                'estado' => $prestamo->estado,
+                'created_at' => Carbon::parse($prestamo->created_at)->format('d/m/Y H:i')
+            ];
+        });
+
+        // Estadísticas
+        $total = $prestamos->count();
+        $prestados = $prestamos->where('estado', 'Prestado')->count();
+        $pagados = $prestamos->where('estado', 'Pago')->count();
+        $devueltos = $prestamos->where('estado', 'Devuelto')->count();
+        $totalValor = $prestamos->sum('subtotal');
+
+        $datos = [
+            'prestamos' => $prestamosFormateados,
+            'total' => $total,
+            'prestados' => $prestados,
+            'pagados' => $pagados,
+            'devueltos' => $devueltos,
+            'totalValor' => number_format($totalValor, 2, ',', '.'),
+            'fechaGeneracion' => Carbon::now()->format('d/m/Y H:i:s'),
+            'empresa' => 'La Casa del Nintendo'
+        ];
+
+        // Generar PDF
+        $pdf = PDF::loadView('pdf.prestamos', $datos);
+        
+        // Configurar papel y orientación
+        $pdf->setPaper('A4', 'portrait');
+        
+        // Descargar PDF con nombre personalizado
+        return $pdf->download('reporte_prestamos_' . Carbon::now()->format('Y_m_d') . '.pdf');
     }
 }

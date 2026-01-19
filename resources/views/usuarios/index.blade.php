@@ -12,6 +12,7 @@
     /* FORM */
 
     .form-grid-2 {
+        padding: 20px;
         display: grid;
         grid-template-columns: repeat(6, 1fr);
         gap: 12px;
@@ -101,7 +102,8 @@
 
 
     /* MODAL */
-    .modal {
+    .modal-editar-cliente {
+        padding: 80px;
         display: none;
         position: fixed;
         z-index: 1000;
@@ -112,7 +114,7 @@
         background-color: rgba(0, 0, 0, 0.5);
     }
 
-    .modal-content {
+    .modal-content-editar-cliente {
         background-color: var(--blanco);
         margin: 2% auto;
         padding: 0;
@@ -135,7 +137,7 @@
         }
     }
 
-    .modal-header {
+    .modal-header-editar-cliente {
         background: var(--azul);
         color: white;
         padding: 15px 20px;
@@ -145,13 +147,13 @@
         align-items: center;
     }
 
-    .modal-header h2 {
+    .modal-header-editar-cliente h2 {
         margin: 0;
         flex: 1;
         font-size: 1.4rem;
     }
 
-    .modal-body {
+    .modal-editar-cliente-body {
         padding: 20px;
     }
 </style>
@@ -273,9 +275,9 @@
 </div>
 
 <!-- Modal para Editar Usuario -->
-<div id="modalEditar" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
+<div id="modalEditar" class="modal-editar-cliente">
+    <div class="modal-content-editar-cliente">
+        <div class="modal-header-editar-cliente">
             <strong>
                 <h2 style="font-size: 24px;">Editar Usuario</h2>
             </strong>
