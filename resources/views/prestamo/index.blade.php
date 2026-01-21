@@ -137,7 +137,7 @@
             <div class="modal-actions-prestamo">
                 <button type="submit" class="btn btn-azul">Guardar</button>
                 <button type="button"
-                        id="closeModalLocal"
+                        id="cancelLocal"
                         class="btn btn-rojo">
                         Cancelar    
                 </button>
@@ -149,10 +149,10 @@
 <!-- Modal Estado -->
 <div id="modalEstado" class="modal hidden">
     <div class="modal-card">
-        <button id="closeModalEstado" class="modal-close">&times;</button>
+        <!-- <button id="closeModalEstado" class="modal-close">&times;</button> -->
         <h3>Cambiar estado del préstamo</h3>
         <p id="estadoDetalle" class="muted"></p>
-        <select id="selectNuevoEstado" class="input"></select>
+        <select id="selectNuevoEstado" class="input" style="border-radius: 5px; width: 100%; border-color: #c8bfbf; margin-top: 9px;"></select>
         <div class="modal-actions">
             <button id="confirmEstado" class="btn btn-azul">Confirmar</button>
             <button id="cancelEstado" class="btn btn-rojo">Cancelar</button>
@@ -815,9 +815,9 @@
             modalLocal.classList.remove('hidden');
         });
 
-        document.getElementById('closeModalLocal').addEventListener('click', () => {
-            modalLocal.classList.add('hidden');
-        });
+        // document.getElementById('closeModalLocal').addEventListener('click', () => {
+        //     modalLocal.classList.add('hidden');
+        // });
 
         document.getElementById('cancelLocal').addEventListener('click', () => {
             modalLocal.classList.add('hidden');
