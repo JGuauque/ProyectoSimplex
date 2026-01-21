@@ -1,0 +1,260 @@
+/* ====================
+   VARIABLES Y BASE
+   ==================== */
+:root{
+  --rojo: #e60012;
+  --azul: #0f9bd7;
+  --blanco: #ffffff;
+  --negro: #111111;
+  --radius: 12px;
+  font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+
+/*
+  QUITAMOS CUALQUIER FONDO QUE OCUPE LA PANTALLA,
+  el fondo real lo maneja .bg-layer (video/imagen).
+*/
+body{
+  margin: 0;
+  background: #000; /* fallback duro por si no carga nada */
+  color: var(--blanco);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ====================
+   CAPA DE FONDO
+   ==================== */
+/* Contenedor que ocupa la pantalla completa detrás del contenido */
+.bg-layer{
+  position: fixed;
+  inset: 0;         /* top:0 right:0 bottom:0 left:0 */
+  overflow: hidden;
+  z-index: 0;       /* fondo */
+}
+
+/* Video a pantalla completa */
+.bg-video{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;          /* recorta manteniendo proporción */
+  object-position: center;    /* centrado */
+}
+
+/*
+  Overlay para dar contraste: puedes ajustar opacidad o usar un
+  gradiente rojo/azul acorde a Nintendo Switch.
+*/
+.bg-overlay{
+  position: absolute;
+  inset: 0;
+  /* Opción 1: oscurecido neutro */
+  /* background: rgba(0,0,0,0.45); */
+
+  /* Opción 2: gradiente temático Nintendo */
+  background: linear-gradient(
+    to right,
+    rgba(230, 0, 18, 0.35),
+    rgba(15, 155, 215, 0.35)
+  );
+}
+
+/* ====================
+   CAPA DE CONTENIDO
+   ==================== */
+.login-header{
+  position: relative;
+  z-index: 1;            /* por encima del fondo */
+  text-align: center;
+  padding: 20px 16px;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+  font-weight: 800;
+}
+
+.login-main{
+  position: relative;
+  z-index: 1;            /* por encima del fondo */
+  flex: 1;
+  display: grid;
+  place-items: center;   /* centra vertical/horizontal */
+  padding: 20px;
+}
+
+/* Caja del formulario */
+.login-box{
+  width: 100%;
+  max-width: 420px;
+  background: rgba(17, 17, 17, 0.1); /* vidrio */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+}
+
+.login-box h2{
+  margin: 0 0 16px 0;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  text-align: center;
+}
+
+/* Inputs */
+.login-box input{
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  border-radius: var(--radius);
+  border: 1px solid rgba(255,255,255,0.35);
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  font-size: 16px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+/* Input de email cuando está en modo cambio de contraseña */
+.login-box input[readonly] {
+  background: rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.8);
+  border-color: rgba(255,255,255,0.5);
+}
+
+.login-box input::placeholder{ 
+  color: rgba(255,255,255,0.7); 
+}
+
+.login-box input:focus{
+  border-color: #fff;
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.12);
+}
+
+/* Grupo de inputs con iconos */
+.input-group {
+  position: relative;
+  margin-bottom: 12px;
+}
+
+.input-group i {
+  position: absolute;
+  left: 14px;
+  top:40%;
+  transform: translateY(-50%);
+  color: rgba(255,255,255,0.7);
+  font-size: 16px;
+  z-index: 1;
+  
+}
+
+.input-group input {
+  padding-left: 40px !important;
+  width: 100%;
+}
+
+
+/* Botón */
+.btn{
+  width: 100%;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--blanco);
+  font-size: 16px;
+  transition: transform .08s ease, filter .2s ease;
+  margin-top: 8px;
+}
+
+.btn-azul{
+  background: linear-gradient(90deg, var(--azul) 0%, #11a6e6 100%);
+  border: 1px solid rgba(255,255,255,0.25);
+}
+
+.btn-rojo{
+  background: linear-gradient(90deg, var(--rojo) 0%, #ff2a2a 100%);
+  border: 1px solid rgba(255,255,255,0.25);
+}
+
+.btn-azul:hover{ 
+  filter: brightness(1.05); 
+  transform: translateY(-1px); 
+}
+
+.btn-rojo:hover{ 
+  filter: brightness(1.05); 
+  transform: translateY(-1px); 
+}
+
+.btn:active{ 
+  transform: translateY(0); 
+}
+
+/* Alertas y mensajes */
+.alert {
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+  font-size: 14px;
+  border: 1px solid transparent;
+  text-align: center;
+}
+
+.alert-info {
+  background: rgba(209, 236, 241, 0.2);
+  color: #d1ecf1;
+  border-color: rgba(190, 229, 235, 0.3);
+}
+
+.alert-success {
+  background: rgba(212, 237, 218, 0.2);
+  color: #8ceca3;
+  border-color: rgba(195, 230, 203, 0.3);
+}
+
+.alert-danger {
+  background: rgba(248, 215, 218, 0.2);
+  color: #ef8e96;
+  border-color: rgba(245, 198, 203, 0.3);
+}
+
+.alert-warning {
+  background: rgba(255, 243, 205, 0.2);
+  color: #fff3cd;
+  border-color: rgba(255, 234, 167, 0.3);
+}
+
+/* RESPONSIVE */
+@media (max-width: 480px){
+  .login-box{ 
+    padding: 22px; 
+    max-width: 90%;
+  }
+  
+  .login-box h2 {
+    font-size: 1.3rem;
+  }
+  
+  .input-group i,
+  .toggle-password {
+    font-size: 14px;
+  }
+  
+  .btn {
+    padding: 10px 14px;
+    font-size: 15px;
+  }
+  
+  .alert {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+}
