@@ -221,8 +221,10 @@ tbody tr:hover {
 }
 
 /* MODAL */
-.modal {
+.modal-ingreso {
     position: fixed;
+    padding-top: 200px;
+    padding-left: 800px;
     top: 0;
     left: 0;
     width: 100%;
@@ -234,7 +236,7 @@ tbody tr:hover {
     z-index: 999;
 }
 
-.modal-content {
+.modal-content-ingreso {
     background: var(--blanco);
     padding: 30px;
     border-radius: var(--radius);
@@ -245,7 +247,7 @@ tbody tr:hover {
     transition: transform 0.3s ease;
 }
 
-.modal-content h3 {
+.modal-content-ingreso h3 {
     margin-bottom: 15px;
 }
 
@@ -264,7 +266,7 @@ tbody tr:hover {
     box-shadow: 0 0 5px rgba(15, 155, 215, 0.4);
 }
 
-.modal-actions {
+.modal-actions-ingreso {
     display: flex;
     justify-content: space-around;
 }

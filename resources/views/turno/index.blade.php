@@ -101,16 +101,16 @@
 
 
 <!-- Modal Base -->
-<div id="modalBase" class="modal" style="display: none;">
-    <div class="modal-content">
+<div id="modalBase" class="modal-ingreso">
+    <div class="modal-content-ingreso">
         <h3>Ingresar base inicial</h3>
-        <form id="formAbrirTurno" action="{{ route('turnos.abrir') }}" method="POST">
+        <form id="formAbrirTurno" action="{{ route('turnos.abrir') }}" method="POST" style="padding: 20px;">
             @csrf
             <!-- Input oculto para el valor real -->
             <input type="hidden" id="baseReal" name="base" required>
 
             <!-- Input visual con formato -->
-            <div class="input-container">
+            <div class="input-container-ingreso">
 
                 <input
                     type="text"
@@ -119,10 +119,11 @@
                     autocomplete="off"
                     inputmode="numeric"
                     class="money-input"
-                    data-symbol="$">
+                    data-symbol="$"
+                    style="border-radius: 7px; width: 100%; border-color: #adb3b3; margin-bottom: 10px;">
             </div>
             <!-- <input type="number" id="inputBase" name="base" placeholder="Ingrese la base" min="0" step="0.01" required> -->
-            <div class="modal-actions">
+            <div class="modal-actions-ingreso">
                 <button type="submit" class="btn btn-azul">Aceptar</button>
                 <button type="button" id="btnCancelarBase" class="btn btn-rojo">Cancelar</button>
             </div>

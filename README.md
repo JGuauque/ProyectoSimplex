@@ -1,40 +1,240 @@
-## Descripción sobre el sistema creado
+# Sistema de Inventario y Facturación POS - Simplex
 
-Este sistema es una aplicación web diseñada para gestionar de forma eficiente la administración de un gimnasio, incluyendo la organización de clases, instructores, clientes, usuarios y proveedores. Permite realizar operaciones como la creación, edición y eliminación de registros, y facilita la visualización de datos mediante gráficos y reportes en PDF, los cuales son generados dinámicamente a partir de la información en la base de datos. Al usar la arquitectura MVC y el framework Laravel, el sistema es escalable, modular y permite mantener una separación clara entre la lógica de negocio y la presentación, asegurando una gestión ágil y precisa de los recursos del gimnasio.
+## 🎯 Características del Sistema
 
-Algunas de las caracteristicas del sistema son:
+- ✅ Gestión completa de inventario
+- ✅ Sistema POS para ventas rápidas
+- ✅ Facturación electrónica según normativa colombiana
+- ✅ Reportes de ventas e inventario
+- ✅ Envío automático de facturas POS por correo
+- ✅ Interfaz amigable
+- ✅ Multi-usuario con roles de acceso
 
-Gestión Centralizada: Permite administrar clases, instructores, clientes y proveedores desde un solo lugar, simplificando el flujo de trabajo y reduciendo errores.
+## 🛠️ Tecnologías Utilizadas
 
-Visualización de Datos en Tiempo Real: Incluye gráficos y reportes PDF que reflejan los datos actuales, brindando información clara para la toma de decisiones rápidas y efectivas.
+- **Backend**: Laravel 11.25.0
+- **Frontend**: Bootstrap, JavaScript
+- **Base de datos**: MySQL
+- **Servidor**: Apache (XAMPP)
+- **Herramientas**: Composer, Node.js, Git
 
-Escalabilidad y Modularidad: La arquitectura MVC de Laravel facilita la expansión y el mantenimiento del sistema, adaptándose a las necesidades crecientes del gimnasio.
+## 📋 Requisitos Previos
 
-Interfaz Intuitiva y Accesible: Diseñada para ser fácil de usar, la aplicación optimiza la experiencia de usuario y permite a los administradores interactuar eficientemente con el sistema.
+### Software Requerido
+- [XAMPP 8.2.12+](https://www.apachefriends.org/es/index.html)
+- [Composer](https://getcomposer.org/download/)
+- [Node.js LTS 22.17.0+](https://nodejs.org/en/blog/release/v24.13.0)
+- [Git](https://git-scm.com/install/windows)
+- [Visual Studio Code](https://code.visualstudio.com/)
 
-## Tecnologías Utilizadas
+### Dependencias de Windows
+- [Microsoft Visual C++ 2013 Redistributable](https://learn.microsoft.com/es-es/cpp/windows/latest-supported-vc-redist?view=msvc-170#visual-studio-2013-vc-120-no-longer-supported)
 
-Este sistema está construido utilizando las siguientes tecnologías:
+### Configuración Mínima del Sistema
+- Windows 10/11, Linux o macOS
+- 4GB RAM mínimo (8GB recomendado)
+- 2GB de espacio libre en disco
+- Puerto 80 y 3306 disponibles
 
-PHP: Lenguaje de programación para el desarrollo backend.
-Laravel: Framework de PHP que facilita el desarrollo de aplicaciones web mediante el patrón MVC.
-phpMyAdmin: Sistema de gestión de bases de datos utilizado para almacenar y gestionar la información.
-JavaScript (Chart.js): Librería de JavaScript para la visualización de gráficos interactivos.
-HTML5 y CSS3: Para la estructura y el diseño visual de la interfaz.
-Bootstrap: Framework de CSS para facilitar la creación de una interfaz responsive y atractiva.
-Composer: Gestor de dependencias de PHP.
-npm: Gestor de paquetes de Node.js utilizado para administrar dependencias de JavaScript.
+## 🚀 Instalación Paso a Paso
 
-## Dependencias Instaladas 
+### 1. Clonar el Repositorio
 
-barryvdh/laravel-dompdf: Permite la generación de archivos PDF desde vistas de Laravel.
-spatie/laravel-permission: Paquete que es una biblioteca que facilita la gestión de roles y permisos en aplicaciones Laravel.
-Extensiones
-Live Server: Nos permitio crear un servidor para alojar nuestra pagina web
-Prettier: Permitio a configurar las reglas que se aplicarán a su código y darle formato.
+```bash
+# Crear carpeta donde se va alojar el proyecto
+mkdir ProyectoSimplex
+cd ProyectoSimplex
+
+# Clonar repositorio
+git clone https://github.com/JGuauque/ProyectoSimplex.git .
+
+```
+
+### 2. Configurar Entorno de Desarrollo
+
+#### A. Iniciar Servidores XAMPP
+1. Abrir XAMPP Control Panel
+2. Iniciar los servicios:
+   - Apache (puerto 80)
+   - MySQL (puerto 3306)
+
+#### B. Crear Base de Datos
+1. Abrir http://localhost/phpmyadmin
+2. Crear nueva base de datos:
+   - Nombre: `simplex`
+   - Collation: `utf8mb4_unicode_ci`
+
+### 3. Instalar Dependencias
+
+En el bash donde se clono el repositorio copia los siguientes comandos:
+
+```bash
+# Instalar dependencias PHP
+composer install
+
+# Instalar dependencias JavaScript
+npm install
+
+# Si hay errores con npm, limpiar cache:
+npm cache clean --force
+```
+
+### 4. Configurar Variables de Entorno
+
+```bash
+# Copiar archivo de entorno
+copy .env.example .env  # En Windows
+# o
+cp .env.example .env    # En Linux/Mac
+```
 
 
-Estas son las principales tecnologías y dependencias utilizadas para el desarrollo de este sistema, lo cual debería facilitar la instalación y configuración de entornos similares para otros colaboradores.
+
+#### Editar archivo `.env` con tu configuración:
+
+```env
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=simplex
+DB_USERNAME=root
+DB_PASSWORD=  # Dejar vacío si no tienes contraseña
+
+# Configuración de correo para facturas (GMAIL)
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=tu_correo@gmail.com
+MAIL_PASSWORD=tu_contraseña_de_aplicación
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=tu_correo@gmail.com
+MAIL_FROM_NAME="La Casa de Nintendo"
+```
+
+#### ⚠️ Importante para Gmail:
+1. Activar verificación en 2 pasos en tu cuenta Google
+2. Generar "Contraseña de aplicación" desde:
+   - [Seguridad de Google](https://myaccount.google.com/security)
+   - Usar esa contraseña en `MAIL_PASSWORD`
+
+### 5. Generar Clave de Aplicación y Migraciones
+
+```bash
+# Generar clave de aplicación
+php artisan key:generate
+
+# Ejecutar migraciones y seeders
+php artisan migrate --seed
+
+# Crear enlace de almacenamiento
+php artisan storage:link
+```
+
+### 6. 🧹 Notas adicionles
+
+El archivo .gitignore incluye .sqlite para evitar subir bases de datos locales.
+
+Si realizas cambios en los estilos o script, pudes recompilar con:
+
+```bash
+# Para desarrollo
+npm run dev
+```
+
+Para modo producción:
+
+```bash
+# Para producción
+npm run build
+```
+
+
+### 7. Iniciar el Servidor
+
+
+Abrir en el buscador de windows el XAMPP Control Panel y iniciar (Start) _Apache_ y _MySQL_
+Arrancar el sistema de inventario y facturación POS
+
+En el editor de codigo abrir terminal (CTRL + Ñ), ejecutar el siguiente comando y seguir el enlace que muestra en la terminal:
+
+```bash
+# Usando artisan
+php artisan serve
+```
+
+### 8. Acceder al Sistema
+
+1. Abrir navegador web
+2. Ir a: http://localhost:8000
+3. Credenciales por defecto:
+   - **Administrador**: admin@demo.com / password123
+
+
+## 🔧 Configuración Adicional
+
+
+### Variables de Entorno para Colombia
+
+```env
+APP_TIMEZONE=America/Bogota
+APP_LOCALE=es
+```
+
+## 📁 Estructura del Proyecto
+
+```
+ProyectoSimplex/
+├── app/
+│   ├── Http/Controllers/   # Controladores
+│   ├── Models/            # Modelos Eloquent
+│   ├── Services/          # Lógica de negocio
+│   └── View/Components/   # Componentes Blade
+├── database/
+│   ├── migrations/        # Migraciones de BD
+│   ├── seeders/          # Datos iniciales
+│   └── factories/        # Factories para pruebas
+├── public/
+│   └── assets/           # CSS, JS, imágenes
+├── resources/
+│   ├── views/            # Vistas Blade
+│   └── lang/             # Traducciones
+├── routes/
+│   ├── web.php           # Rutas web
+│   └── api.php           # Rutas API
+└── storage/
+    ├── app/public/       # Archivos subidos
+    └── logs/             # Logs de aplicación
+```
+
+## 🐛 Solución de Problemas Comunes
+
+### Error de Conexión a MySQL
+1. Verificar que MySQL esté corriendo en XAMPP
+2. Comprobar credenciales en `.env`
+3. Probar conexión manual en phpMyAdmin
+
+### Error de Permisos
+
+```bash
+# En Linux/Mac
+chmod -R 755 storage bootstrap/cache
+
+# En Windows (ejecutar como administrador)
+icacls storage /grant Users:(OI)(CI)F
+```
+
+### Error al Enviar Correos
+1. Verificar contraseña de aplicación en Gmail
+2. Confirmar que el correo no requiere inicio de sesión
+3. Probar con otro puerto (465 con SSL)
+
+---
+
+**✨ ¡Listo! Tu sistema POS Simplex está instalado y listo para usar.**
+
+*Desarrollado con ❤️ para el local comercial La Casa de Nintendo, Palmira*
+
 
 ## About Laravel
 

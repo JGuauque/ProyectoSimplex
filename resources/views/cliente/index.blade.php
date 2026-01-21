@@ -31,6 +31,8 @@
 
     .modal-header {
         display: flex;
+        border-radius: 10px;
+        padding: 10px;
         justify-content: space-between;
         align-items: center;
         margin-bottom: 20px;
@@ -40,8 +42,8 @@
         /* background-color: #c9e9f9ff; */
     }
 
-    .modal-header h3 {
-        color: #333;
+    .modal-header h2 {
+        color: #f8f9fa;
         margin: 0;
     }
 
