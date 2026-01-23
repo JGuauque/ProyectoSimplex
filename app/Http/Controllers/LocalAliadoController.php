@@ -51,9 +51,24 @@ class LocalAliadoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(LocalAliado $localAliado)
+    public function show($id)
     {
         //
+        try {
+            // Buscar el local, lanzará 404 si no existe
+            $local = LocalAliado::findOrFail($id);
+
+            return response()->json($local);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Local no encontrado'
+            ], 404);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error al obtener el local',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
@@ -67,22 +82,23 @@ class LocalAliadoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, LocalAliado $local )
+    public function update(Request $request, $id)
     {
-        //
+        $local = LocalAliado::findOrFail($id);
+
         $request->validate([
             'nombre' => 'required|string|max:255',
-            'identificacion' => 'nullable|string|unique:locales_aliados,identificacion,' . $local->id,
-            'contacto' => 'nullable|string|max:255',
-            'direccion' => 'nullable|string|max:500'
+            'identificacion' => 'nullable|string|max:50|unique:locales_aliados,identificacion,' . $id,
+            'contacto' => 'nullable|string|max:100',
+            'direccion' => 'nullable|string|max:255',
+            'activo' => 'boolean'
         ]);
 
         $local->update($request->all());
 
         return response()->json([
-            'success' => true,
-            'local' => $local,
-            'message' => 'Local actualizado exitosamente'
+            'message' => 'Local actualizado exitosamente',
+            'local' => $local
         ]);
     }
 

@@ -243,9 +243,15 @@ Route::prefix('api')->group(function () {
     Route::prefix('locales-aliados')->group(function () {
         Route::get('/', [LocalAliadoController::class, 'index'])->name('locales.index');
         Route::post('/', [LocalAliadoController::class, 'store'])->name('locales.store');
-        Route::put('/{local}', [LocalAliadoController::class, 'update'])->name('locales.update');
         Route::delete('/{local}', [LocalAliadoController::class, 'destroy'])->name('locales.destroy');
     });
+
+    Route::put('/locales-aliados/{id}', [LocalAliadoController::class, 'update'])
+        ->name('locales-aliados.update');
+
+    Route::get('/locales-aliados/{id}', [LocalAliadoController::class, 'show'])
+        ->name('locales-aliados.show');
+
     Route::get('/api/productos-con-stock', function () {
         $productos = \App\Models\Producto::where('stock', '>', 0)->get();
         return response()->json($productos);

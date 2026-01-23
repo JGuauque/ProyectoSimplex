@@ -114,13 +114,13 @@
                 <div class="form-group-prestamo">
                     <label for="localNombre">Nombre del local <span class="required">*</span></label>
                     <input id="localNombre" type="text" placeholder="Ingrese el nombre del local" required>
-                    
+
                 </div>
 
                 <div class="form-group-prestamo">
                     <label for="localId">ID / NIT</label>
                     <input id="localId" type="text" placeholder="Ej: 123456789-0">
-                    
+
                 </div>
 
                 <div class="form-group-prestamo">
@@ -137,9 +137,60 @@
             <div class="modal-actions-prestamo">
                 <button type="submit" class="btn btn-azul">Guardar</button>
                 <button type="button"
-                        id="cancelLocal"
-                        class="btn btn-rojo">
-                        Cancelar    
+                    id="cancelLocal"
+                    class="btn btn-rojo">
+                    Cancelar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Nuevo Local -->
+<div id="modalEditarLocal" class="modal-prestamo hidden">
+    <div class="modal-card-prestamo">
+        <div class="modal-header-prestamo">
+            <h3 id="modalLocalTitle" class="modal-title-prestamo">Editar Local</h3>
+            <!-- <button id="closeModalLocal" class="modal-close">&times;</button> -->
+        </div>
+
+        <form id="formEditarLocal" class="modal-form-prestamo">
+
+            <!-- Campo oculto para el ID del local -->
+            <input type="hidden" id="edit_localIdHidden">
+
+            <div class="form-row-prestamo">
+
+                <div class="form-group-prestamo">
+                    <label for="localNombre">Nombre del local <span class="required">*</span></label>
+                    <input id="edit_localNombre" type="text" placeholder="Ingrese el nombre del local" required>
+
+                </div>
+
+                <div class="form-group-prestamo">
+                    <label for="edit_localId">ID / NIT</label>
+                    <input id="edit_localId" type="text" placeholder="Ej: 123456789-0">
+
+                </div>
+
+                <div class="form-group-prestamo">
+                    <label for="edit_localContacto">Contacto</label>
+                    <input id="edit_localContacto" type="text" placeholder="Teléfono o email">
+                </div>
+
+                <div class="form-group-prestamo">
+                    <label for="edit_localDireccion">Dirección</label>
+                    <input id="edit_localDireccion" type="text" placeholder="Dirección">
+                </div>
+
+            </div>
+
+            <div class="modal-actions-prestamo">
+                <button type="submit" class="btn btn-azul">Actualizar</button>
+                <button type="button"
+                    id="cancelEditarLocal"
+                    class="btn btn-rojo">
+                    Cancelar
                 </button>
             </div>
         </form>
@@ -776,11 +827,6 @@
             actualizarCarrito();
         };
 
-        window.editarLocal = function(localId) {
-            // Implementar edición de local
-            alert('Editar local ' + localId + ' - Función pendiente');
-        };
-
         window.eliminarLocal = async function(localId) {
             if (!confirm('¿Está seguro de eliminar este local?')) return;
 
@@ -827,6 +873,8 @@
 
 <script src="{{ asset('js\prestamo\estados-prestamo.js') }}"></script>
 <script src="{{ asset('js\prestamo\reporte-prestamo.js') }}"></script>
+<!-- En la sección de scripts, agrega este nuevo archivo -->
+<script src="{{ asset('js/locales/editar-local.js') }}"></script>
 
 
 @endsection
