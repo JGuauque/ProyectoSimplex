@@ -74,9 +74,9 @@
                     data-imagen-src="{{ asset('storage/' . $producto->imagen) }}"
                     class="imagen-producto">
                 @else
-                <img src="{{ url('images/placeholder-producto.png') }}"
+                <img src="{{ url('images/placeholder-producto.jpg') }}"
                     alt="Sin imagen"
-                    data-imagen-src="{{ asset('images/placeholder-producto.png') }}" 
+                    data-imagen-src="{{ asset('images/placeholder-producto.jpg') }}" 
                     class="imagen-producto">
                 @endif
 

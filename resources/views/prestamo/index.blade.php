@@ -46,9 +46,9 @@
         </div>
     </div>
 
-    <div id="carritoWrap" class="panel-sub">
+    <div id="carritoWrap" class="panel-sub" style="margin-bottom: 15px;">
         <strong>
-            <h4 style="font-size: 17px;">Productos a prestar</h4>
+            <h4 style="font-size: 17px; text-decoration: underline;">Productos a prestar</h4>
         </strong>
 
         <ul id="listaCarrito" class="lista-carrito">
@@ -57,8 +57,8 @@
     </div>
 
     <div class="filtros-prestamos">
-        <input id="buscarPrestamo" type="text" class="input" placeholder="Buscar por producto o local">
-        <select id="filtroEstado" class="input">
+        <input id="buscarPrestamo" type="text" class="input" placeholder="Buscar por producto o local" style="border-radius: 5px; border-color: #c8bfbf;">
+        <select id="filtroEstado" class="input" style="border-radius: 5px; border-color: #c8bfbf;">
             <option value="">Todos los estados</option>
             <option value="Prestado">Prestado</option>
             <option value="Devuelto">Devuelto</option>

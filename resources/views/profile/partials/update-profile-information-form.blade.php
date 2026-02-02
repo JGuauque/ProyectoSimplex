@@ -34,7 +34,7 @@
             </div>
 
             <div>
-                <x-input-label for="identificacion" :value="__('Documento de identidad')" />
+                <x-input-label for="identificacion" :value="__('Identificación')" />
                 <x-text-input id="identificacion" name="identificacion" type="text"
                     class="mt-1 block w-full" :value="old('identificacion', $user->identificacion)"
                     placeholder="Cédula, NIT, Pasaporte" readonly/>

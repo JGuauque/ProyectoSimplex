@@ -270,6 +270,7 @@
                     @endforeach
                 </tbody>
             </table>
+            {{ $usuarios->links() }}
         </div>
     </section>
 </div>
@@ -420,7 +421,6 @@
 </script>
 
 <script>
-    // Asegurar que las funciones sean globales
     window.resetearContrasena = async function(usuarioId, email) {
         if (!confirm(`¿Desea resetear la contraseña para ${email}?\n\nEl usuario deberá establecer una nueva contraseña al siguiente inicio de sesión.`)) {
             return;

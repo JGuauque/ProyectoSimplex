@@ -19,3 +19,8 @@ yarn-error.log
 /.idea
 /.vscode
 /.zed
+database/seeders/ClientesSeeder.php
+database/seeders/DatabaseSeeder.php
+database/seeders/LocalesAliadosSeeder.php
+database/seeders/ProductosSeeder.php
+database/seeders/UsersSeeder.php

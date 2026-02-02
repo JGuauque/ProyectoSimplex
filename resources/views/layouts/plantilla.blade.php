@@ -43,7 +43,7 @@
   <aside id="sidebar" class="sidebar">
     <div class="sidebar-header">
       <img src="{{ asset('Assets\lacasadelnintendo-removebg-preview.png') }}" alt="Logo" class="logo">
-      <h2>La Casa del Nintendo</h2>
+      <strong><h2 style="font-size: 20px; ">La Casa del Nintendo</h2></strong>
     </div>
     <nav class="sidebar-nav">
 

@@ -30,20 +30,6 @@ class EmailController extends Controller
             // Registrar en log
             Log::info("Enviando comprobante de venta {$venta->numero_factura} a {$email}");
 
-
-
-            // // Enviar email
-            // Mail::to($email)->send(new ComprobanteVentaMail($venta, $email));
-
-            // // Verificar si se envió correctamente
-            // if (count(Mail::failures()) > 0) {
-            //     Log::error('Error al enviar email: ' . json_encode(Mail::failures()));
-            //     return response()->json([
-            //         'success' => false,
-            //         'message' => 'Error al enviar el correo. Por favor, intenta nuevamente.'
-            //     ], 500);
-            // }
-
             Log::info("Comprobante enviado exitosamente a {$email}");
 
             // Enviar email usando try-catch en lugar de Mail::failures()

@@ -12,7 +12,10 @@ class Cliente extends Model
     protected $table = 'clientes'; // <- importante si no sigue convención
 
     protected $fillable = [
-        'nombre', 'identificacion', 'telefono'
+        'nombre',
+        'identificacion',
+        'email', // Asegúrate de agregarlo aquí
+        'telefono',
     ];
 
     // Relación con Venta

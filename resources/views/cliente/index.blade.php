@@ -494,14 +494,6 @@
                 return false;
             }
 
-            // // Filtro por fecha
-            // if (filtroFecha) {
-            //     const fechaVenta = new Date(venta.created_at).toISOString().split('T')[0];
-            //     if (fechaVenta !== filtroFecha) {
-            //         return false;
-            //     }
-            // }
-
             // POR ESTO:
             if (filtroFecha) {
                 // Obtener fecha en formato YYYY-MM-DD en zona horaria local

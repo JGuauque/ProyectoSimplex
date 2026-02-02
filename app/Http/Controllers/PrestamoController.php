@@ -165,44 +165,104 @@ class PrestamoController extends Controller
         }
     }
 
-    // Cambiar estado del préstamo
     public function updateEstado(Request $request, Prestamo $prestamo)
-    {
-        $request->validate([
-            'estado' => 'required|in:Prestado,Devuelto,Pago'
-        ]);
+{
+    $request->validate([
+        'estado' => 'required|in:Prestado,Devuelto,Pago'
+    ]);
 
-        DB::beginTransaction();
-
-        try {
-            $estadoAnterior = $prestamo->estado;
-            $nuevoEstado = $request->estado;
-
-            // Lógica para manejar cambios de estado
-            if ($estadoAnterior === 'Devuelto' && $nuevoEstado !== 'Devuelto') {
-                // Si estaba devuelto y se cambia a otro estado, quitar stock
-                $prestamo->producto->decrement('stock', $prestamo->cantidad);
-            } elseif ($nuevoEstado === 'Devuelto' && $estadoAnterior !== 'Devuelto') {
-                // Si se marca como devuelto, devolver stock
-                $prestamo->producto->increment('stock', $prestamo->cantidad);
-            }
-
-            $prestamo->estado = $nuevoEstado;
-            $prestamo->save();
-
-            DB::commit();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Estado actualizado exitosamente'
-            ]);
-        } catch (\Exception $e) {
-            DB::rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => 'Error al actualizar estado: ' . $e->getMessage()
-            ], 500);
-        }
+    // Validar transiciones permitidas
+    $estadoAnterior = $prestamo->estado;
+    $nuevoEstado = $request->estado;
+    
+    $transicionesPermitidas = [
+        'Pendiente' => ['Prestado', 'Pago'], // Desde Pendiente solo a Prestado o Pago
+        'Prestado' => ['Devuelto', 'Pago'],  // Desde Prestado solo a Devuelto o Pago
+        'Devuelto' => ['Pago'],              // Desde Devuelto solo a Pago
+        'Pago' => [],                        // Desde Pago no se puede cambiar
+    ];
+    
+    // Si no es una transición permitida, retornar error
+    if (!isset($transicionesPermitidas[$estadoAnterior]) || 
+        !in_array($nuevoEstado, $transicionesPermitidas[$estadoAnterior])) {
+        return response()->json([
+            'success' => false,
+            'message' => "Transición no permitida: de '$estadoAnterior' a '$nuevoEstado'"
+        ], 422);
     }
+
+    DB::beginTransaction();
+
+    try {
+        // Lógica para manejar cambios de estado (solo las transiciones válidas)
+        if ($estadoAnterior === 'Devuelto' && $nuevoEstado === 'Pago') {
+            // Si estaba devuelto y se marca como pago, quitar stock (ya fue devuelto)
+            $prestamo->producto->decrement('stock', $prestamo->cantidad);
+        } elseif ($nuevoEstado === 'Devuelto' && $estadoAnterior === 'Prestado') {
+            // Si se marca como devuelto desde prestado, devolver stock
+            $prestamo->producto->increment('stock', $prestamo->cantidad);
+        }
+        // Pendiente → Prestado: No cambia stock (ya se descontó al crear el préstamo)
+        // Pendiente → Pago: No cambia stock
+        // Prestado → Pago: No cambia stock (el producto sigue prestado)
+
+        $prestamo->estado = $nuevoEstado;
+        $prestamo->save();
+
+        DB::commit();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Estado actualizado exitosamente'
+        ]);
+    } catch (\Exception $e) {
+        DB::rollBack();
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Error al actualizar estado: ' . $e->getMessage()
+        ], 500);
+    }
+}
+
+    // Cambiar estado del préstamo
+    // public function updateEstado(Request $request, Prestamo $prestamo)
+    // {
+    //     $request->validate([
+    //         'estado' => 'required|in:Prestado,Devuelto,Pago'
+    //     ]);
+
+    //     DB::beginTransaction();
+
+    //     try {
+    //         $estadoAnterior = $prestamo->estado;
+    //         $nuevoEstado = $request->estado;
+
+    //         // Lógica para manejar cambios de estado
+    //         if ($estadoAnterior === 'Devuelto' && $nuevoEstado !== 'Devuelto') {
+    //             // Si estaba devuelto y se cambia a otro estado, quitar stock
+    //             $prestamo->producto->decrement('stock', $prestamo->cantidad);
+    //         } elseif ($nuevoEstado === 'Devuelto' && $estadoAnterior !== 'Devuelto') {
+    //             // Si se marca como devuelto, devolver stock
+    //             $prestamo->producto->increment('stock', $prestamo->cantidad);
+    //         }
+
+    //         $prestamo->estado = $nuevoEstado;
+    //         $prestamo->save();
+
+    //         DB::commit();
+
+    //         return response()->json([
+    //             'success' => true,
+    //             'message' => 'Estado actualizado exitosamente'
+    //         ]);
+    //     } catch (\Exception $e) {
+    //         DB::rollBack();
+
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => 'Error al actualizar estado: ' . $e->getMessage()
+    //         ], 500);
+    //     }
+    // }
 }
