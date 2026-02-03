@@ -68,15 +68,15 @@
                 </div>
                 @endif
 
-                @if($producto->imagen)
+                @if(file_exists(public_path('storage/' . $producto->imagen)))
                 <img src="{{ url('storage/' . $producto->imagen) }}"
                     alt="{{ $producto->nombre }}"
                     data-imagen-src="{{ asset('storage/' . $producto->imagen) }}"
                     class="imagen-producto">
                 @else
-                <img src="{{ url('images/placeholder-producto.jpg') }}"
+                <img src="{{ url('images/placeholder-producto.png') }}"
                     alt="Sin imagen"
-                    data-imagen-src="{{ asset('images/placeholder-producto.jpg') }}" 
+                    data-imagen-src="{{ asset('images/placeholder-producto.png') }}" 
                     class="imagen-producto">
                 @endif
 
