@@ -35,7 +35,11 @@
 
         <div class="form-row">
             <label>Precio (editable)</label>
-            <input id="precioPrestamo" class="input" type="text" placeholder="Precio por unidad">
+            <input id="precioPrestamo" class="input" type="text" placeholder="Precio por unidad"
+                    pattern="[0-9]+"
+                    title="Solo se permiten números"
+                    oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                    maxlength="7">
             <small id="costoRef" class="muted">Costo: -</small>
         </div>
 

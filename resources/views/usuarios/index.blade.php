@@ -168,9 +168,20 @@
         <form method="POST" action="{{ route('usuarios.store') }}" id="formCrearUsuario">
             @csrf
             <div class="form-grid">
-                <input type="text" id="nombres" name="name" placeholder="Nombres *" required value="{{ old('name') }}">
-                <input type="text" id="apellidos" name="apellidos" placeholder="Apellidos *" required value="{{ old('apellidos') }}">
-                <input type="text" id="identificacion" name="identificacion" placeholder="Documento *" required value="{{ old('identificacion') }}">
+                <input 
+                    type="text" id="nombres" name="name" placeholder="Nombres *" required value="{{ old('name') }}"
+                        pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+"
+                        title="Solo se permiten letras y espacios"
+                        oninput="this.value = this.value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, '')">
+                <input type="text" id="apellidos" name="apellidos" placeholder="Apellidos *" required value="{{ old('apellidos') }}"
+                        pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+"
+                        title="Solo se permiten letras y espacios"
+                        oninput="this.value = this.value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, '')">
+                <input type="text" id="identificacion" name="identificacion" placeholder="Documento *" required value="{{ old('identificacion') }}"
+                        pattern="[0-9]+"
+                        title="Solo se permiten números"
+                        oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                        maxlength="20">
                 <input type="email" id="email" name="email" placeholder="Email *" required value="{{ old('email') }}">
                 <input type="text" id="usuario" name="username" placeholder="Usuario *" required value="{{ old('username') }}">
                 <input type="password" id="password" name="password" placeholder="Contraseña *" required>
@@ -275,7 +286,7 @@
     </section>
 </div>
 
-<!-- Modal para Editar Usuario -->
+<!-- Modal para      -->
 <div id="modalEditar" class="modal-editar-cliente">
     <div class="modal-content-editar-cliente">
         <div class="modal-header-editar-cliente">
@@ -290,9 +301,19 @@
                 @csrf
                 @method('PUT')
                 <div class="form-grid-2">
-                    <input type="text" id="edit_nombres" name="name" placeholder="Nombres" required>
-                    <input type="text" id="edit_apellidos" name="apellidos" placeholder="Apellidos">
-                    <input type="text" id="edit_identificacion" name="identificacion" placeholder="ID" required>
+                    <input type="text" id="edit_nombres" name="name" placeholder="Nombres" required
+                        pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+"
+                        title="Solo se permiten letras y espacios"
+                        oninput="this.value = this.value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, '')">
+                    <input type="text" id="edit_apellidos" name="apellidos" placeholder="Apellidos"
+                        pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+"
+                        title="Solo se permiten letras y espacios"
+                        oninput="this.value = this.value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, '')">
+                    <input type="text" id="edit_identificacion" name="identificacion" placeholder="ID" required
+                            pattern="[0-9]+"
+                            title="Solo se permiten números"
+                            oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                            maxlength="20">
                     <input type="email" id="edit_email" name="email" placeholder="Email" required>
                     <input type="text" id="edit_usuario" name="username" placeholder="Usuario" required>
                     <input type="password" id="edit_password" name="password" placeholder="Contraseña (dejar en blanco para no cambiar)">
@@ -305,12 +326,7 @@
                         </option>
                         @endforeach
                     </select>
-                    <!-- <select id="edit_rol" name="roles[]">
 
-                        @foreach($roles as $role)
-                        <option value="{{ $role->name }}">{{ $role->name }}</option>
-                        @endforeach
-                    </select> -->
                     <button type="submit" class="btn btn-azul btn-guardar-modal">Actualizar</button>
 
                     <button type="button" class="btn btn-rojo btn-cancelar-modal" onclick="cerrarModalEditar()">Cancelar</button>
@@ -336,7 +352,7 @@
                 // Obtener el primer rol del usuario (si tiene)
                 const rolSelect = document.getElementById('edit_rol');
                 if (usuario.roles && usuario.roles.length > 0) {
-                    // Seleccionar el rol actual del usuario
+                    // Seleccionar el rol actual del usuario    
                     const userRoleName = usuario.roles[0].name;
 
                     // Buscar la opción que coincida con el rol del usuario

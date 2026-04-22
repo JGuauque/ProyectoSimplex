@@ -54,7 +54,7 @@ Route::middleware('auth', 'verified')->group(function () {
 
     Route::resource('usuarios', UserController::class);
 
-    Route::get('/usuarios/{id}/get-data', [UserController::class, 'getUsuarioData'])->name('usuarios.get-data');
+    Route::get('/usuarios/{id}/get-data', [UserController::class, 'getData'])->name('usuarios.get-data');
 
 
 

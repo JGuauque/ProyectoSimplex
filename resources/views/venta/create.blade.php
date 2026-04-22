@@ -295,7 +295,11 @@ $proximoNumero = Venta::obtenerProximoNumero();
                         </div>
                         <div class="form-row">
                             <label for="celularCliente">Celular</label>
-                            <input type="text" id="celularCliente" name="celular_cliente" required>
+                            <input type="text" id="celularCliente" name="celular_cliente" required
+                                pattern="[0-9]+"
+                                title="Solo se permiten números"
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                maxlength="20">
                         </div>
                     </div>
 
@@ -326,7 +330,11 @@ $proximoNumero = Venta::obtenerProximoNumero();
 
                             <div class="campo-producto tooltip-wrap">
                                 <label for="precioVenta">Precio de venta</label>
-                                <input type="number" id="precioVenta" name="precio_venta" step="0.01">
+                                <input type="number" id="precioVenta" name="precio_venta"  
+                                pattern="[0-9]+"
+                                title="Solo se permiten números"
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                maxlength="7">
                                 <span id="tooltipBase" class="tooltip hidden"></span>
                             </div>
 

@@ -44,9 +44,9 @@ class UserController extends Controller
         //
         // Validación
         $request->validate([
-            'name' => 'required|string|max:255',
-            'apellidos' => 'nullable|string|max:255',
-            'identificacion' => 'required|string|unique:users',
+            'name' => 'required|string|regex:/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/|max:255',
+            'apellidos' => 'required|string|regex:/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/|max:255',
+            'identificacion' => 'required|string|regex:/^[0-9]+$/|max:20|unique:users,identificacion',
             'email' => 'required|string|email|max:255|unique:users',
             'username' => 'required|string|max:255|unique:users',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
@@ -95,7 +95,7 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         //
-         $usuario = User::findOrFail($id);
+        $usuario = User::findOrFail($id);
 
         $request->validate([
             'name' => 'required|string|max:255',
@@ -145,6 +145,26 @@ class UserController extends Controller
         $usuario->delete();
 
         return redirect()->route('usuarios.index')->with('success', 'Usuario eliminado exitosamente');
+    }
+
+    public function getData($id)
+    {
+        $usuario = User::with('roles')->findOrFail($id);
+
+        return response()->json([
+            'id' => $usuario->id,
+            'name' => $usuario->name,
+            'apellidos' => $usuario->apellidos,
+            'identificacion' => $usuario->identificacion,
+            'email' => $usuario->email,
+            'username' => $usuario->username,
+            'roles' => $usuario->roles->map(function ($role) {
+                return [
+                    'id' => $role->id,
+                    'name' => $role->name
+                ];
+            })
+        ]);
     }
 
     /**

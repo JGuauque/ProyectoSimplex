@@ -24,3 +24,6 @@ database/seeders/DatabaseSeeder.php
 database/seeders/LocalesAliadosSeeder.php
 database/seeders/ProductosSeeder.php
 database/seeders/UsersSeeder.php
+/database/factories
+/database/factories
+database/factories/UserFactory.php

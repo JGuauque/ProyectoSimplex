@@ -70,19 +70,19 @@ class RolesAndPermissionsSeeder extends Seeder
         }
 
         // 2. CREAR ROLES
-        $roleOwner = Role::firstOrCreate(['name' => 'Owner']);
+        // $roleOwner = Role::firstOrCreate(['name' => 'Owner']);
         $roleAdmin = Role::firstOrCreate(['name' => 'Administrador']);
         $roleVendedor = Role::firstOrCreate(['name' => 'Vendedor']);
 
         // 3. ASIGNAR PERMISOS A CADA ROL
         
         // OWNER: Todos los permisos
-        $roleOwner->syncPermissions([
-            'ver usuarios',
-            'crear usuarios',
-            'editar usuarios',
-            'resetear contraseña',
-        ]);
+        // $roleOwner->syncPermissions([
+        //     'ver usuarios',
+        //     'crear usuarios',
+        //     'editar usuarios',
+        //     'resetear contraseña',
+        // ]);
         
         // ADMINISTRADOR: Casi todos, excepto quizás algunos sensibles
         $roleAdmin->syncPermissions(Permission::all());
@@ -120,14 +120,14 @@ class RolesAndPermissionsSeeder extends Seeder
         // Asignar rol Owner al primer usuario (tu)
         
         $user = \App\Models\User::first();
-        if ($user && !$user->hasRole('Owner')) {
-            $user->assignRole('Owner');
+        if ($user && !$user->hasRole('Administrador')) {
+            $user->assignRole('Administrador');
         }
 
         // También puedes asignar roles a otros usuarios existentes
         // Ejemplo: segundo usuario como vendedor
         $secondUser = \App\Models\User::skip(1)->first();
-        if ($secondUser && !$secondUser->hasAnyRole(['Owner', 'Administrador', 'Vendedor'])) {
+        if ($secondUser && !$secondUser->hasAnyRole(['Administrador', 'Vendedor'])) {
             $secondUser->assignRole('Vendedor');
         }
     }

@@ -68,6 +68,14 @@
                 </div>
                 @endif
 
+                <!-- Agrega esto temporalmente para debug -->
+                <!-- <div style="background: #f0f0f0; padding: 5px; margin: 5px; border-radius: 5px; font-size: 12px;">
+                    <p><strong>Debug:</strong> ID: {{ $producto->id }} | Activo: {{ $producto->activo ? 'Sí' : 'No' }}</p>
+                    @if(!$producto->activo)
+                    <p style="color: red;">⚠️ Este producto está inactivo</p>
+                    @endif
+                </div> -->
+
                 @if(file_exists(public_path('storage/' . $producto->imagen)))
                 <img src="{{ url('storage/' . $producto->imagen) }}"
                     alt="{{ $producto->nombre }}"
@@ -76,7 +84,7 @@
                 @else
                 <img src="{{ url('images/placeholder-producto.png') }}"
                     alt="Sin imagen"
-                    data-imagen-src="{{ asset('images/placeholder-producto.png') }}" 
+                    data-imagen-src="{{ asset('images/placeholder-producto.png') }}"
                     class="imagen-producto">
                 @endif
 

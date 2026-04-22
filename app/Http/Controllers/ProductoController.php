@@ -16,11 +16,23 @@ class ProductoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-        $productos = Producto::orderBy('created_at', 'desc')->get();
+        $query = Producto::query();
+
+        // Si hay parámetro 'ver_inactivos' en la URL, muestra todos
+        if ($request->has('ver_inactivos')) {
+            $productos = $query->get();
+        } else {
+            // Por defecto, solo activos
+            $productos = $query->where('activo', true)->get();
+        }
+
         return view('inventario.index', compact('productos'));
+        // $productos = Producto::where('activo', true)->get();
+        // // $productos = Producto::orderBy('created_at', 'desc')->get();
+        // return view('inventario.index', compact('productos'));
     }
 
     /**
@@ -136,15 +148,11 @@ class ProductoController extends Controller
         //
         $producto = Producto::findOrFail($id);
 
-        // Eliminar imagen si existe
-        if ($producto->imagen) {
-            Storage::disk('public')->delete($producto->imagen);
-        }
-
-        $producto->delete();
+        // En lugar de eliminar, marcar como inactivo
+        $producto->update(['activo' => false]);
 
         return redirect()->route('inventario.index')
-            ->with('success', 'Producto eliminado exitosamente');
+            ->with('success', 'Producto desactivado exitosamente. Ya no aparecerá en ventas nuevas.');
     }
 
     public function getProductoData($id)

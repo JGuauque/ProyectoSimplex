@@ -17,10 +17,12 @@ class Producto extends Model
         'stock',
         'categoria',
         'destacado',
+        'activo', // Asegúrate de agregar 'activo' aquí
         'imagen'
     ];
 
     protected $casts = [
+        'activo' => 'boolean', // Para que Laravel lo trate como booleano
         'destacado' => 'boolean',
         'costo' => 'decimal:2',
         'precio' => 'decimal:2',
@@ -42,6 +44,12 @@ class Producto extends Model
     public function scopeActivos($query)
     {
         return $query->where('activo', true);
+    }
+
+    // Scope para productos inactivos
+    public function scopeInactivos($query)
+    {
+        return $query->where('activo', false);
     }
 
     // Accesor para margen de ganancia
