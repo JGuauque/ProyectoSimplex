@@ -56,6 +56,7 @@ body {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 12px;
+    
 }
 
 #edit_nombre {
@@ -194,6 +195,31 @@ tbody tr:hover {
     width: 90%;
     max-width: 600px;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* ===== VALIDACIONES EN TIEMPO REAL ===== */
+input#nombre,
+input#edit_nombre {
+    text-transform: capitalize;
+}
+
+input#telefono,
+input#edit_telefono {
+    text-transform: none;
+}
+
+/* Estilo para campos inválidos */
+input.invalid {
+    border: 2px solid var(--rojo);
+    background-color: #ffe6e6;
+}
+
+/* Mensajes de error */
+.error-message {
+    color: var(--rojo);
+    font-size: 12px;
+    margin-top: 5px;
+    display: block;
 }
 
 /* ===== RESPONSIVE ===== */

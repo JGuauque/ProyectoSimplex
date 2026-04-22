@@ -225,6 +225,20 @@
         min-width: 120px;
         display: inline-block;
     }
+
+    /* Estilos para campos inválidos */
+    input.invalid {
+        border: 2px solid #e60012 !important;
+        background-color: #ffe6e6 !important;
+    }
+
+    /* Mensajes de error */
+    .error-message {
+        color: #e60012;
+        font-size: 12px;
+        margin-top: 5px;
+        display: block;
+    }
 </style>
 
 <div class="clientes-main">
@@ -234,12 +248,12 @@
             <h2 style="font-size: 24px;">Registrar Cliente</h2>
         </strong>
 
-        <form method="POST" action="{{ route('clientes.store') }}" class="form-grid">
+        <form method="POST" action="{{ route('clientes.store') }}" class="form-grid" id="formRegistrarCliente">
             @csrf
             <input type="text" id="nombreCliente" name="nombre" placeholder="Nombre completo *" required value="{{ old('nombre') }}">
             <input type="text" id="idCliente" name="identificacion" placeholder="Identificación *" required value="{{ old('identificacion') }}">
             <input type="email" id="correoCliente" name="email" placeholder="Correo electrónico" value="{{ old('email') }}">
-            <input type="text" id="telefonoCliente" name="telefono" placeholder="Teléfono" value="{{ old('telefono') }}">
+            <input type="text" id="telefonoCliente" name="telefono" placeholder="Teléfono (Ej: +573001234567)" value="{{ old('telefono') }}">
             <button type="submit" class="btn btn-azul">Guardar</button>
         </form>
     </section>
@@ -350,8 +364,6 @@
                 <strong>
                     <h2 style="font-size: 24px;">Editar Cliente</h2>
                 </strong>
-                <!-- <h3>Editar Cliente</h3> -->
-                <!-- <button type="button" class="close-modal" onclick="cerrarModalEditar()">&times;</button> -->
             </div>
             <form id="formEditarCliente" method="POST">
                 @csrf
@@ -360,7 +372,7 @@
                     <input type="text" id="edit_nombre" name="nombre" placeholder="Nombre completo" required>
                     <input type="text" id="edit_identificacion" name="identificacion" placeholder="ID" required>
                     <input type="email" id="edit_email" name="email" placeholder="Correo electrónico">
-                    <input type="text" id="edit_telefono" name="telefono" placeholder="Teléfono">
+                    <input type="text" id="edit_telefono" name="telefono" placeholder="Teléfono (Ej: +573001234567)">
                     <button type="submit" class="btn btn-azul btn-guardar-modal">Actualizar</button>
                     <button type="button" class="btn btn-rojo btn-cancelar-modal" onclick="cerrarModalEditar()">Cancelar</button>
                 </div>
@@ -376,7 +388,6 @@
                 <strong>
                     <h2 style="font-size: 20px;">Historial de Ventas - <span id="clienteModalNombre"></span></h2>
                 </strong>
-                <!-- <h3>Historial de Ventas - <span id="clienteModalNombre"></span></h3> -->
                 <button type="button" class="close-modal" onclick="cerrarModalVentas()">&times;</button>
             </div>
 
@@ -465,6 +476,106 @@
 </div>
 
 <script>
+    // ===== FUNCIONES DE VALIDACIÓN =====
+
+    // Validar que el nombre solo contenga letras y espacios
+    function validarNombre(input) {
+        const valor = input.value;
+        const regex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]*$/; // Permite letras, tildes, ñ y espacios
+        
+        if (valor.length > 0 && !regex.test(valor)) {
+            input.value = valor.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, '');
+            input.classList.add('invalid');
+            mostrarError(input, 'Solo se permiten letras');
+            return false;
+        } else {
+            input.classList.remove('invalid');
+            ocultarError(input);
+            return true;
+        }
+    }
+
+    // Validar que el teléfono tenga + al inicio seguido solo de números
+    function validarTelefono(input) {
+        let valor = input.value;
+        
+        // Si está vacío, no mostrar error
+        if (valor === '') {
+            input.classList.remove('invalid');
+            ocultarError(input);
+            return true;
+        }
+        
+        // Si no empieza con + y tiene contenido, agregar + automáticamente
+        if (valor.length > 0 && !valor.startsWith('+')) {
+            valor = '+' + valor.replace(/[^0-9]/g, '');
+            input.value = valor;
+        }
+        
+        // Validar formato: + seguido solo de números
+        const regex = /^\+[0-9]*$/;
+        if (!regex.test(valor)) {
+            // Remover caracteres no numéricos después del +
+            const soloNumeros = valor.substring(1).replace(/[^0-9]/g, '');
+            input.value = '+' + soloNumeros;
+            if (soloNumeros === '') {
+                input.classList.add('invalid');
+                mostrarError(input, 'El teléfono debe empezar con + y solo contener números');
+                return false;
+            } else {
+                input.classList.remove('invalid');
+                ocultarError(input);
+                return true;
+            }
+        } else {
+            input.classList.remove('invalid');
+            ocultarError(input);
+            return true;
+        }
+    }
+
+    // Mostrar mensaje de error
+    function mostrarError(input, mensaje) {
+        let errorDiv = input.parentElement.querySelector('.error-message');
+        if (!errorDiv) {
+            errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            input.parentElement.appendChild(errorDiv);
+        }
+        errorDiv.textContent = mensaje;
+    }
+
+    // Ocultar mensaje de error
+    function ocultarError(input) {
+        const errorDiv = input.parentElement.querySelector('.error-message');
+        if (errorDiv) {
+            errorDiv.remove();
+        }
+    }
+
+    // Validar formulario antes de enviar
+    function validarFormularioCliente(formId) {
+        const form = document.getElementById(formId);
+        const nombreInput = form.querySelector('[name="nombre"]');
+        const telefonoInput = form.querySelector('[name="telefono"]');
+        
+        let esValido = true;
+        
+        // Validar nombre
+        if (nombreInput && !validarNombre(nombreInput)) {
+            esValido = false;
+        }
+        
+        // Validar teléfono
+        if (telefonoInput && telefonoInput.value !== '') {
+            if (!validarTelefono(telefonoInput)) {
+                esValido = false;
+            }
+        }
+        
+        return esValido;
+    }
+
     // ===== VARIABLES GLOBALES =====
     let ventasClienteActual = [];
     let clienteIdActual = null;
@@ -494,9 +605,8 @@
                 return false;
             }
 
-            // POR ESTO:
+            // Filtro por fecha
             if (filtroFecha) {
-                // Obtener fecha en formato YYYY-MM-DD en zona horaria local
                 const fecha = new Date(venta.created_at);
                 const fechaLocal = fecha.getFullYear() + '-' +
                     String(fecha.getMonth() + 1).padStart(2, '0') + '-' +
@@ -506,7 +616,6 @@
                     return false;
                 }
             }
-
 
             // Filtro por rango de precio
             const totalVenta = parseFloat(venta.total);
@@ -589,6 +698,11 @@
         document.getElementById('modalEditarCliente').style.display = 'none';
         // Limpiar el formulario al cerrar
         document.getElementById('formEditarCliente').reset();
+        // Limpiar mensajes de error
+        const errors = document.querySelectorAll('.error-message');
+        errors.forEach(error => error.remove());
+        const invalidInputs = document.querySelectorAll('input.invalid');
+        invalidInputs.forEach(input => input.classList.remove('invalid'));
     }
 
     // Función para ver ventas del cliente
@@ -732,16 +846,6 @@
         }
     }
 
-    // Función para ver detalle de venta
-    // function verDetalleVenta(ventaId) {
-    //     // alert(`Detalle de venta ${ventaId} - Esta funcionalidad se puede expandir para mostrar productos, etc.`);
-    //     // Abrir PDF A4 en nueva pestaña
-    //     window.open(`/factura/pdf/a4/${ventaId}`, '_blank');
-
-    //     // O si prefieres mantener un registro en consola:
-    //     console.log(`Abriendo factura A4 para venta ID: ${ventaId}`);
-    // }
-
     // Función para cerrar el modal de ventas
     function cerrarModalVentas() {
         document.getElementById('modalVentas').style.display = 'none';
@@ -767,6 +871,58 @@
                 });
             }
         });
+
+        // ===== AGREGAR VALIDACIONES A LOS INPUTS =====
+        
+        // Validación para nombre en formulario de registro
+        const nombreRegistro = document.getElementById('nombreCliente');
+        if (nombreRegistro) {
+            nombreRegistro.addEventListener('input', function() { validarNombre(this); });
+            nombreRegistro.addEventListener('blur', function() { validarNombre(this); });
+        }
+        
+        // Validación para teléfono en formulario de registro
+        const telefonoRegistro = document.getElementById('telefonoCliente');
+        if (telefonoRegistro) {
+            telefonoRegistro.addEventListener('input', function() { validarTelefono(this); });
+            telefonoRegistro.addEventListener('blur', function() { validarTelefono(this); });
+        }
+        
+        // Validación para nombre en modal de edición
+        const nombreEdicion = document.getElementById('edit_nombre');
+        if (nombreEdicion) {
+            nombreEdicion.addEventListener('input', function() { validarNombre(this); });
+            nombreEdicion.addEventListener('blur', function() { validarNombre(this); });
+        }
+        
+        // Validación para teléfono en modal de edición
+        const telefonoEdicion = document.getElementById('edit_telefono');
+        if (telefonoEdicion) {
+            telefonoEdicion.addEventListener('input', function() { validarTelefono(this); });
+            telefonoEdicion.addEventListener('blur', function() { validarTelefono(this); });
+        }
+        
+        // Validar formulario de registro antes de enviar
+        const formRegistro = document.getElementById('formRegistrarCliente');
+        if (formRegistro) {
+            formRegistro.addEventListener('submit', function(e) {
+                if (!validarFormularioCliente('formRegistrarCliente')) {
+                    e.preventDefault();
+                    alert('Por favor, corrige los errores en el formulario antes de enviar.\n\n- El nombre solo debe contener letras\n- El teléfono debe empezar con + y solo contener números');
+                }
+            });
+        }
+        
+        // Validar formulario de edición antes de enviar
+        const formEdicion = document.getElementById('formEditarCliente');
+        if (formEdicion) {
+            formEdicion.addEventListener('submit', function(e) {
+                if (!validarFormularioCliente('formEditarCliente')) {
+                    e.preventDefault();
+                    alert('Por favor, corrige los errores en el formulario antes de enviar.\n\n- El nombre solo debe contener letras\n- El teléfono debe empezar con + y solo contener números');
+                }
+            });
+        }
     });
 
     // Cerrar modales al hacer click fuera
@@ -775,10 +931,10 @@
         const modalVentas = document.getElementById('modalVentas');
 
         if (event.target === modalEditar) {
-            modalEditar.style.display = 'none';
+            cerrarModalEditar();
         }
         if (event.target === modalVentas) {
-            modalVentas.style.display = 'none';
+            cerrarModalVentas();
         }
     }
 </script>
