@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('stock')->default(0);
             $table->string('categoria'); // Son Tecnologia, Hogar, Jugueteria, Salud, Cocina.
             $table->boolean('destacado')->default(false);
+            $table->boolean('activo')->default(true);
             $table->string('imagen')->nullable();
             $table->timestamps();
         });

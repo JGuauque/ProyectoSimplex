@@ -152,7 +152,7 @@ class ProductoController extends Controller
         $producto->update(['activo' => false]);
 
         return redirect()->route('inventario.index')
-            ->with('success', 'Producto desactivado exitosamente. Ya no aparecerá en ventas nuevas.');
+            ->with('success', 'Producto eliminado exitosamente.');
     }
 
     public function getProductoData($id)
