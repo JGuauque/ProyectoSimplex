@@ -168,22 +168,25 @@
         <form method="POST" action="{{ route('usuarios.store') }}" id="formCrearUsuario">
             @csrf
             <div class="form-grid">
-                <input 
+                <input
                     type="text" id="nombres" name="name" placeholder="Nombres *" required value="{{ old('name') }}"
-                        pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+"
-                        title="Solo se permiten letras y espacios"
-                        oninput="this.value = this.value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, '')">
+                    pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+"
+                    title="Solo se permiten letras y espacios"
+                    oninput="this.value = this.value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, '')">
                 <input type="text" id="apellidos" name="apellidos" placeholder="Apellidos *" required value="{{ old('apellidos') }}"
-                        pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+"
-                        title="Solo se permiten letras y espacios"
-                        oninput="this.value = this.value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, '')">
+                    pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+"
+                    title="Solo se permiten letras y espacios"
+                    oninput="this.value = this.value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, '')">
                 <input type="text" id="identificacion" name="identificacion" placeholder="Documento *" required value="{{ old('identificacion') }}"
-                        pattern="[0-9]+"
-                        title="Solo se permiten números"
-                        oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-                        maxlength="20">
+                    pattern="[0-9]+"
+                    title="Solo se permiten números"
+                    oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                    maxlength="20" >
                 <input type="email" id="email" name="email" placeholder="Email *" required value="{{ old('email') }}">
-                <input type="text" id="usuario" name="username" placeholder="Usuario *" required value="{{ old('username') }}">
+                <input type="text" id="usuario" name="username" placeholder="Usuario *" required value="{{ old('username') }}"
+                    onblur="limpiarUsername()"
+                    oninput="this.value = this.value.toLowerCase().replace(/[^a-z0-9_]/g, '')"
+                    style="background-color: #f8f9fa;" readonly>
                 <input type="password" id="password" name="password" placeholder="Contraseña *" required>
                 <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Confirmar Contraseña *" required>
 
@@ -310,12 +313,12 @@
                         title="Solo se permiten letras y espacios"
                         oninput="this.value = this.value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, '')">
                     <input type="text" id="edit_identificacion" name="identificacion" placeholder="ID" required
-                            pattern="[0-9]+"
-                            title="Solo se permiten números"
-                            oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-                            maxlength="20">
+                        pattern="[0-9]+"
+                        title="Solo se permiten números"
+                        oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                        maxlength="20">
                     <input type="email" id="edit_email" name="email" placeholder="Email" required>
-                    <input type="text" id="edit_usuario" name="username" placeholder="Usuario" required>
+                    <input type="text" id="edit_usuario" name="username" placeholder="Usuario" required readonly>
                     <input type="password" id="edit_password" name="password" placeholder="Contraseña (dejar en blanco para no cambiar)">
                     <input type="password" id="edit_password_confirmation" name="password_confirmation" placeholder="Confirmar Contraseña">
                     <select id="edit_rol" name="roles[]">
@@ -337,6 +340,53 @@
 </div>
 
 <script>
+    // Función para generar username automáticamente
+    function generarUsername() {
+        const nombres = document.getElementById('nombres').value.trim();
+        const apellidos = document.getElementById('apellidos').value.trim();
+        const usernameInput = document.getElementById('usuario');
+
+        if (nombres && apellidos) {
+            // Obtener la primera letra del nombre
+            const inicialNombre = nombres.charAt(0).toLowerCase();
+            // Obtener el apellido completo en minúsculas y sin espacios
+            const apellidoLimpio = apellidos.toLowerCase().replace(/\s/g, '');
+            // Generar username
+            const usernameGenerado = inicialNombre + apellidoLimpio;
+
+            // Asignar el username generado
+            usernameInput.value = usernameGenerado;
+
+            // Opcional: Agregar un indicador visual de que se generó automáticamente
+            usernameInput.style.backgroundColor = '#e8f0fe';
+
+            // Opcional: Mostrar un tooltip o mensaje
+            usernameInput.title = 'Username generado automáticamente';
+        } else {
+            // Si falta nombre o apellido, limpiar el username
+            usernameInput.value = '';
+            usernameInput.style.backgroundColor = '#f8f9fa';
+        }
+    }
+
+    // Función para validar que el username no tenga espacios ni caracteres especiales
+    function validarUsername(username) {
+        // Solo permitir letras minúsculas, números y guión bajo
+        const regex = /^[a-z0-9_]+$/;
+        return regex.test(username);
+    }
+
+    // Función para limpiar el username (solo letras minúsculas, números y guión bajo)
+    function limpiarUsername() {
+        const usernameInput = document.getElementById('usuario');
+        let username = usernameInput.value.toLowerCase();
+        // Reemplazar espacios por guión bajo
+        username = username.replace(/\s/g, '_');
+        // Eliminar caracteres especiales (solo letras, números y guión bajo)
+        username = username.replace(/[^a-z0-9_]/g, '');
+        usernameInput.value = username;
+    }
+    
     // Modal functions
     function abrirModalEditar(usuarioId) {
         // Obtener datos del usuario via AJAX
@@ -369,6 +419,80 @@
                 document.getElementById('formEditarUsuario').action = `/usuarios/${usuarioId}`;
 
                 // Mostrar el modal
+                document.getElementById('modalEditar').style.display = 'block';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al cargar los datos del usuario');
+            });
+    }
+    // Función para generar username en el modal de edición
+    function generarUsernameEdicion() {
+        const nombres = document.getElementById('edit_nombres').value.trim();
+        const apellidos = document.getElementById('edit_apellidos').value.trim();
+        const usernameInput = document.getElementById('edit_usuario');
+
+        if (nombres && apellidos) {
+            const inicialNombre = nombres.charAt(0).toLowerCase();
+            const apellidoLimpio = apellidos.toLowerCase().replace(/\s/g, '');
+            const usernameGenerado = inicialNombre + apellidoLimpio;
+
+            // Solo actualizar si el campo está vacío o si el usuario no lo ha modificado manualmente
+            if (!usernameInput.dataset.manual || usernameInput.dataset.manual === 'false') {
+                usernameInput.value = usernameGenerado;
+            }
+        }
+    }
+
+    // Modificar la función abrirModalEditar para agregar los event listeners
+    function abrirModalEditar(usuarioId) {
+        fetch(`/usuarios/${usuarioId}/get-data`)
+            .then(response => response.json())
+            .then(usuario => {
+                document.getElementById('edit_nombres').value = usuario.name;
+                document.getElementById('edit_apellidos').value = usuario.apellidos || '';
+                document.getElementById('edit_identificacion').value = usuario.identificacion;
+                document.getElementById('edit_email').value = usuario.email;
+                document.getElementById('edit_usuario').value = usuario.username;
+
+                // Agregar event listeners para el modal de edición
+                const editNombres = document.getElementById('edit_nombres');
+                const editApellidos = document.getElementById('edit_apellidos');
+                const editUsername = document.getElementById('edit_usuario');
+
+                // Marcar que el username no ha sido editado manualmente
+                editUsername.dataset.manual = 'false';
+
+                editNombres.addEventListener('input', function() {
+                    generarUsernameEdicion();
+                });
+                editApellidos.addEventListener('input', function() {
+                    generarUsernameEdicion();
+                });
+
+                // Cuando el usuario edite manualmente el username
+                editUsername.addEventListener('input', function() {
+                    this.dataset.manual = 'true';
+                    // Limpiar el username
+                    let username = this.value.toLowerCase();
+                    username = username.replace(/\s/g, '_');
+                    username = username.replace(/[^a-z0-9_]/g, '');
+                    this.value = username;
+                });
+
+                // Seleccionar el rol
+                const rolSelect = document.getElementById('edit_rol');
+                if (usuario.roles && usuario.roles.length > 0) {
+                    const userRoleName = usuario.roles[0].name;
+                    for (let i = 0; i < rolSelect.options.length; i++) {
+                        if (rolSelect.options[i].value === userRoleName) {
+                            rolSelect.selectedIndex = i;
+                            break;
+                        }
+                    }
+                }
+
+                document.getElementById('formEditarUsuario').action = `/usuarios/${usuarioId}`;
                 document.getElementById('modalEditar').style.display = 'block';
             })
             .catch(error => {
@@ -432,6 +556,39 @@
             e.preventDefault();
             alert('La contraseña debe tener al menos 8 caracteres');
             return false;
+        }
+    });
+    // Agregar event listeners para generar username automáticamente
+    document.addEventListener('DOMContentLoaded', function() {
+        const nombresInput = document.getElementById('nombres');
+        const apellidosInput = document.getElementById('apellidos');
+        const usernameInput = document.getElementById('usuario');
+
+        if (nombresInput && apellidosInput) {
+            // Generar username cuando se escriba en nombre o apellido
+            nombresInput.addEventListener('input', generarUsername);
+            apellidosInput.addEventListener('input', generarUsername);
+
+            // También generar cuando se pierda el foco (por si acaso)
+            nombresInput.addEventListener('blur', generarUsername);
+            apellidosInput.addEventListener('blur', generarUsername);
+        }
+
+        // Si el usuario edita manualmente el username, cambiar el color de fondo
+        if (usernameInput) {
+            usernameInput.addEventListener('focus', function() {
+                this.style.backgroundColor = '#fff';
+                this.title = 'Puedes editar el username manualmente';
+            });
+
+            // Validar el username al perder el foco
+            usernameInput.addEventListener('blur', function() {
+                limpiarUsername();
+                if (!validarUsername(this.value) && this.value !== '') {
+                    alert('El username solo puede contener letras minúsculas, números y guión bajo');
+                    this.focus();
+                }
+            });
         }
     });
 </script>

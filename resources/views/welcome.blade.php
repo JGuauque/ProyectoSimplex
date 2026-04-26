@@ -37,11 +37,11 @@
                 <a href="#prestamo">Préstamo</a>
                 <a href="#contacto">Contacto</a>
                 @if (Route::has('login'))
-                    @auth
+                @auth
 
-                    @else
-                    <a class="btn btn-login" href="{{ route('dashboard') }}">Iniciar sesión</a> 
-                    @endif
+                @else
+                <a class="btn btn-login" href="{{ route('dashboard') }}">Iniciar sesión</a>
+                @endif
                 @endauth
             </nav>
         </div>
@@ -183,6 +183,7 @@
             <div class="contact-form">
                 <h2>Solicita más información</h2>
                 <form id="contactForm">
+                    @csrf
                     <label for="name">Nombre</label>
                     <input id="name" name="name" type="text" required placeholder="Tu nombre">
                     <label for="emailC">Correo</label>
@@ -192,7 +193,7 @@
                     <label for="msg">Mensaje</label>
                     <textarea id="msg" name="message" rows="4" placeholder="¿En qué te podemos ayudar?"></textarea>
                     <button type="submit" class="btn btn-primary">Enviar</button>
-                    <p id="contactMessage" class="form-message" aria-live="polite"></p>
+                    <div id="contactMessage" class="form-message" aria-live="polite"></div>
                 </form>
             </div>
 
@@ -235,6 +236,66 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        // Manejo del formulario de contacto
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            const messageDiv = document.getElementById('contactMessage');
+
+            // Deshabilitar botón y mostrar loading
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Enviando...';
+            messageDiv.innerHTML = '';
+
+            // Obtener los datos del formulario
+            const formData = new FormData(this);
+
+            try {
+                const response = await fetch('{{ route("contacto.enviar") }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}',
+                        'Accept': 'application/json'
+                    },
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Mostrar mensaje de éxito
+                    messageDiv.innerHTML = `<div style="background-color: #d4edda; color: #155724; padding: 10px; border-radius: 5px; margin-top: 10px;">✅ ${data.message}</div>`;
+                    // Limpiar el formulario
+                    this.reset();
+                } else {
+                    // Mostrar errores
+                    let errorMsg = '❌ Error al enviar el mensaje. ';
+                    if (data.errors) {
+                        errorMsg += Object.values(data.errors).flat().join(', ');
+                    } else if (data.message) {
+                        errorMsg += data.message;
+                    }
+                    messageDiv.innerHTML = `<div style="background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px; margin-top: 10px;">${errorMsg}</div>`;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                messageDiv.innerHTML = '<div style="background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px; margin-top: 10px;">❌ Error de conexión. Por favor, intenta de nuevo.</div>';
+            } finally {
+                // Restaurar botón
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+
+                // Ocultar mensaje después de 5 segundos
+                setTimeout(() => {
+                    messageDiv.innerHTML = '';
+                }, 5000);
+            }
+        });
+    </script>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <!-- <script src="js/script.js"></script> -->

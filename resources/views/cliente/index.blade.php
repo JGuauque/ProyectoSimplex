@@ -253,7 +253,7 @@
             <input type="text" id="nombreCliente" name="nombre" placeholder="Nombre completo *" required value="{{ old('nombre') }}">
             <input type="text" id="idCliente" name="identificacion" placeholder="Identificación *" required value="{{ old('identificacion') }}">
             <input type="email" id="correoCliente" name="email" placeholder="Correo electrónico" value="{{ old('email') }}">
-            <input type="text" id="telefonoCliente" name="telefono" placeholder="Teléfono (Ej: +573001234567)" value="{{ old('telefono') }}">
+            <input type="text" id="telefonoCliente" name="telefono" placeholder="Teléfono (Ej: +57 3001234567)" value="{{ old('telefono') }}">
             <button type="submit" class="btn btn-azul">Guardar</button>
         </form>
     </section>
@@ -372,7 +372,7 @@
                     <input type="text" id="edit_nombre" name="nombre" placeholder="Nombre completo" required>
                     <input type="text" id="edit_identificacion" name="identificacion" placeholder="ID" required>
                     <input type="email" id="edit_email" name="email" placeholder="Correo electrónico">
-                    <input type="text" id="edit_telefono" name="telefono" placeholder="Teléfono (Ej: +573001234567)">
+                    <input type="text" id="edit_telefono" name="telefono" placeholder="Teléfono (Ej: +57 3001234567)">
                     <button type="submit" class="btn btn-azul btn-guardar-modal">Actualizar</button>
                     <button type="button" class="btn btn-rojo btn-cancelar-modal" onclick="cerrarModalEditar()">Cancelar</button>
                 </div>
@@ -508,7 +508,7 @@
         
         // Si no empieza con + y tiene contenido, agregar + automáticamente
         if (valor.length > 0 && !valor.startsWith('+')) {
-            valor = '+' + valor.replace(/[^0-9]/g, '');
+            valor = '+57' + valor.replace(/[^0-9]/g, '');
             input.value = valor;
         }
         

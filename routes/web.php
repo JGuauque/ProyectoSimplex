@@ -17,6 +17,8 @@ use App\Http\Controllers\PdfController;
 
 use App\Http\Controllers\EmailController;
 
+use App\Http\Controllers\ContactoController;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Hash;
@@ -213,6 +215,8 @@ Route::middleware('auth', 'verified')->group(function () {
     // Locales aliados
     Route::resource('locales-aliados', LocalAliadoController::class);
 });
+
+Route::post('/contacto/enviar', [ContactoController::class, 'enviar'])->name('contacto.enviar');
 
 // ========== RUTAS API (Para AJAX/JavaScript) ==========
 Route::prefix('api')->group(function () {

@@ -23,40 +23,6 @@
     </form>
 </section>
 
-<!-- Estado del turno -->
-<!-- <section class="estado-turno" id="estadoTurno">
-    <h2>Turno Activo</h2>
-    <div id="turnoInfo">
-        @if($turnoActivo)
-        <p><strong>Inicio:</strong> {{ $turnoActivo->inicio->format('d/m/Y H:i:s') }}</p>
-        <div class="stats">
-            <div class="card">
-                <h3>Base</h3>
-                <p>${{ number_format($turnoActivo->base, 2) }}</p>
-            </div>
-            <div class="card">
-                <h3>Ventas Totales</h3>
-                <p>${{ number_format($turnoActivo->ventas_totales, 2) }}</p>
-            </div>
-            <div class="card">
-                <h3>Efectivo</h3>
-                <p>${{ number_format($turnoActivo->efectivo, 2) }}</p>
-            </div>
-            <div class="card">
-                <h3>Transferencia</h3>
-                <p>${{ number_format($turnoActivo->transferencia, 2) }}</p>
-            </div>
-        </div>
-        @else
-        <p>No hay turno activo</p>
-        @endif
-    </div>
-    <button onclick="abrirTurno()" class="btn btn-azul" {{ $turnoActivo ? 'disabled' : '' }}>Abrir Turno</button>
-    <form id="formCerrarTurno" action="{{ route('turnos.cerrar') }}" method="POST" style="display: inline;">
-        @csrf
-        <button type="submit" class="btn btn-rojo" {{ !$turnoActivo ? 'disabled' : '' }}>Cerrar Turno</button>
-    </form>
-</section> -->
 
 <!-- Historial -->
 <section class="historial" style="margin: 70px; margin-top: 0px; padding: 30px;">
@@ -120,7 +86,11 @@
                     inputmode="numeric"
                     class="money-input"
                     data-symbol="$"
-                    style="border-radius: 7px; width: 100%; border-color: #adb3b3; margin-bottom: 10px;">
+                    style="border-radius: 7px; width: 100%; border-color: #adb3b3; margin-bottom: 10px;"
+                    pattern="[0-9]+"
+                    title="Solo se permiten números"
+                    oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                    maxlength="10">
             </div>
             <!-- <input type="number" id="inputBase" name="base" placeholder="Ingrese la base" min="0" step="0.01" required> -->
             <div class="modal-actions-ingreso">
