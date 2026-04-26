@@ -295,11 +295,12 @@ $proximoNumero = Venta::obtenerProximoNumero();
                         </div>
                         <div class="form-row">
                             <label for="celularCliente">Celular</label>
-                            <input type="text" id="celularCliente" name="celular_cliente" required
+                            <input type="text" id="celularCliente" name="celular_cliente" required maxlength="20">
+                            <!-- <input type="text" id="celularCliente" name="celular_cliente" required
                                 pattern="[0-9]+"
                                 title="Solo se permiten números"
                                 oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-                                maxlength="20">
+                                maxlength="20"> -->
                         </div>
                     </div>
 

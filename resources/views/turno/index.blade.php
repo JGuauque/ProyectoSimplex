@@ -87,7 +87,7 @@
                     class="money-input"
                     data-symbol="$"
                     style="border-radius: 7px; width: 100%; border-color: #adb3b3; margin-bottom: 10px;"
-                    pattern="[0-9]+"
+                    
                     title="Solo se permiten números"
                     oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                     maxlength="10">
